@@ -30,5 +30,5 @@ class RequisicaoAdmin(admin.ModelAdmin):
     list_display = ('usuario', 'material', 'quantidade', 'status', 'data_requisicao')  # Certifique-se de incluir 'data_requisicao'
     list_filter = ('status', 'data_requisicao')  # Adicionando filtro baseado na data de requisição
 
-admin.site.register(Requisicao, RequisicaoAdmin)
+admin.site.register(Requisicao, RequisicaoAdmin)git push -u origin
 
