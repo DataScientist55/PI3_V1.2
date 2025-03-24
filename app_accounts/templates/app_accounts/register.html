@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar</title>
+</head>
+<body>
+    <h2>Crie sua Conta</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.crispy }}
+        <button type="submit">Registrar</button>
+    </form>
+
+    <p>Já tem uma conta? <a href="{% url 'login' %}">Faça login</a></p>
+</body>
+</html>

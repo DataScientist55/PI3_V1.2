@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block app_home %}
+
+  <h2>Suas Requisições</h2>
+  <ul>
+    {% for req in requisicoes %}
+      <li>{{ req.material.nome }} - {{ req.quantidade }} unidades ({{ req.status }})</li>
+    {% empty %}
+      <p>Você ainda não fez nenhuma requisição.</p>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'app_home' %}">Voltar</a>
+
+{% endblock app_home %}

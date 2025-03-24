@@ -1,0 +1,35 @@
+{% if request.user.is_authenticated %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-5">
+  <div class="container">
+    <a class="navbar-brand d-md-none d-xs-block py-3" href="#">
+        <img src="static/img/logo.png" height="250" alt="Company Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link mx-2 btn rounded-0 btn-danger" aria-current="page" href="{% url 'app_home' %}">Home</a>
+
+        <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle mx-2 btn rounded-0 btn-danger" href="#" id="navbarDropdownSwitch"
+                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Estoque
+              </a>
+            <ul class="dropdown-menu" aria-labelLedby="navbarDropdownSwitch">
+              <li><a class="dropdown-item" href="{% url 'listar_materiais' %}">Material</a></li>
+              <li><a class="dropdown-item" href="{% url 'cadastrar_material' %}">Cadastrar</a></li>
+
+            </ul>
+        </li>
+      </ul>
+        <a href="{% url 'logout' %}" class="btn btn-warning"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path>
+            </svg> Logout {{ request.user }}</a>
+    </div>
+  </div>
+</nav>
+{% endif %}

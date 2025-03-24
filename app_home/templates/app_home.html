@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block app_home %} 
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque de Materiais</title>
+</head>
+<body>
+    
+    <h1 >Estoque de Materiais</h1>
+
+    {% if user.is_authenticated %}
+        <p>Bem-vindo, {{ user.username }}! (<a href="{% url 'logout' %}">Sair</a>)</p>
+    {% else %}
+        <p><a href="{% url 'login' %}">Entrar</a> | <a href="{% url 'app_accounts:register' %}">Registrar</a></p>
+    {% endif %}
+
+    <h2>Materiais Disponíveis</h2>
+    <ul>
+        {% for material in materiais %}
+            <li>{{ material.nome }} ({{ material.categoria }}) - {{ material.quantidade }} disponíveis
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'requisitar_material' material.id %}">
+                        {% csrf_token %}
+                        <input type="number" name="quantidade" min="1" max="{{ material.quantidade }}" required>
+                        <button type="submit">Requisitar</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if user.is_authenticated %}
+        <h2>Suas Requisições</h2>
+        <ul>
+            {% for req in requisicoes %}
+                <li>{{ req.material.nome }} - {{ req.quantidade }} unidades ({{ req.status }})</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</body>
+</html>
+{% endblock app_home %}
