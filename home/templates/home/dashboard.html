@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Dashboard</h1>
+
+    {% if painel_admin %}
+        <h2>Painel de Controle do Administrador 🚀</h2>
+
+        <h3>Requisições Pendentes 🔔</h3>
+        <ul>
+            {% for requisicao in pendentes %}
+                <li>
+                    {{ requisicao.material }} - {{ requisicao.status }} ({{ requisicao.usuario }})
+                </li>
+            {% empty %}
+                <li>Nenhuma requisição pendente.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Todos os Materiais 📦</h3>
+        <ul>
+            {% for material in materiais %}
+                <li>{{ material.nome }} - Quantidade: {{ material.quantidade }}</li>
+            {% empty %}
+                <li>Nenhum material cadastrado.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Todas as Requisições 📋</h3>
+        <ul>
+            {% for requisicao in requisicoes %}
+                <li>
+                    {{ requisicao.material }} - {{ requisicao.status }} ({{ requisicao.usuario }})
+                </li>
+            {% empty %}
+                <li>Nenhuma requisição cadastrada.</li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        <h2>Minhas Requisições 📄</h2>
+        <ul>
+            {% for requisicao in requisicoes_usuario %}
+                <li>
+                    {{ requisicao.material }} - {{ requisicao.status }}
+                </li>
+            {% empty %}
+                <li>Você ainda não fez nenhuma requisição.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</div>
+{% endblock %}

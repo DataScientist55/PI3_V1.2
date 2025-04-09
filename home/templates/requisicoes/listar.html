@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Materiais{% endblock %}
+
+{% block content %}
+    <h2>Lista de Materiais</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Quantidade</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for material in materiais %}
+            <tr>
+                <td>{{ material.id }}</td>
+                <td>{{ material.nome }}</td>
+                <td>{{ material.categoria }}</td>
+                <td>{{ material.quantidade }}</td>
+                <td>
+                    <a href="{% url 'editar_material' material.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'excluir_material' material.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'cadastrar_material' %}" class="btn btn-primary mt-3">Adicionar Novo Material</a>
+{% endblock %}

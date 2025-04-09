@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Controle de Estoque{% endblock %}
+
+{% block content %}
+    <h2>Controle de Estoque</h2>
+    <p>Aqui você pode visualizar o status atual do estoque.</p>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Categoria</th>
+                <th>Quantidade Atual</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for material in materiais %}
+            <tr>
+                <td>{{ material.nome }}</td>
+                <td>{{ material.categoria }}</td>
+                <td>{{ material.quantidade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="{% url 'cadastrar_material' %}" class="btn btn-success">Adicionar Material</a>
+    <a href="{% url 'listar_materiais' %}" class="btn btn-primary">Gerenciar Materiais</a>
+{% endblock %}

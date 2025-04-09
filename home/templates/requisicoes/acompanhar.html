@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Acompanhar Requisições{% endblock %}
+
+{% block content %}
+    <h2>Requisições de Materiais</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Material</th>
+                <th>Quantidade</th>
+                <th>Status</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for requisicao in requisicoes %}
+            <tr>
+                <td>{{ requisicao.id }}</td>
+                <td>{{ requisicao.material.nome }}</td>
+                <td>{{ requisicao.quantidade }}</td>
+                <td>{{ requisicao.status }}</td>
+                <td>{{ requisicao.data_requisicao }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'fazer_requisicao' %}" class="btn btn-primary mt-3">Fazer Nova Requisição</a>
+{% endblock %}

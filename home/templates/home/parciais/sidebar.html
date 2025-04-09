@@ -1,0 +1,38 @@
+
+<div class="sidebar bg-dark text-white p-3" style="min-height: 100vh;">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'home' %}">Início</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'sobre' %}">Sobre</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'contato' %}">Contato</a>
+        </li>
+        {% if user.is_authenticated %}
+            {% if user.is_admin %}
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'cadastrar_material' %}">Cadastrar Material</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'listar_materiais' %}">Listar Materiais</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'controle_pedidos' %}">Controle</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'fazer_requisicao' %}">Requisitar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'acompanhar_requisicoes' %}">Acompanhar</a>
+                </li>
+            {% endif %}
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

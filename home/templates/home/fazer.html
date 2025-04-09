@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Fazer Requisição{% endblock %}
+
+{% block content %}
+    <h2>Fazer Requisição de Material</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Requisitar</button>
+    </form>
+    <a href="{% url 'acompanhar_requisicoes' %}" class="btn btn-secondary mt-3">Acompanhar Requisições</a>
+{% endblock %}
