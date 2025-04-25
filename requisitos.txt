@@ -20,6 +20,7 @@ pylint-django==2.6.1
 pylint-plugin-utils==0.8.2
 PyMySQL==1.1.1
 python-decouple==3.8
+python-dotenv==1.1.0
 sqlparse==0.5.3
 tomlkit==0.13.2
 types-PyYAML==6.0.12.20250402

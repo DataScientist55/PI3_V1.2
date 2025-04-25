@@ -24,7 +24,8 @@ import os
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = ['pi3v12-production.up.railway.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'pi3v12-production.up.railway.app']
+
 
 
 
