@@ -1,2 +1,1 @@
-web: gunicorn EstEsc.wsgi:application 
-
+web: gunicorn EstEsc.wsgi:application
