@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ght72^lj-k(6s0o639#f##q+*xu@&+26j-s9hu)7x6b!_p+pa$'
+import os
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False") == "True"
+ALLOWED_HOSTS = ['pi3v12-production.up.railway.app']
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -79,14 +80,16 @@ WSGI_APPLICATION = 'EstEsc.wsgi.application'
 
 
 
+from decouple import config
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'estoque_db',
-        'USER': 'root',
-        'PASSWORD': 'V3cc#!o55#',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': ('estoque'),
+        'USER': ('root'),
+        'PASSWORD': ('V3cc#!o55#'),
+        'HOST': ('192.168.43.116'),
+        'PORT': ('3306'),
     }
 }
 
@@ -127,6 +130,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [ BASE_DIR / 'static' ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -1,18 +1,16 @@
-from django.shortcuts import render, redirect
-from rest_framework import viewsets, permissions
-from .models import Material, Requisicao
-from .serializers import MaterialSerializer, RequisicaoSerializer
+from django.contrib import messages
+from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from rest_framework.views import APIView
+from rest_framework import permissions, viewsets
 from rest_framework.response import Response
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model
-from .forms import RegistroForm
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
-from .forms import CustomUserCreationForm
+from rest_framework.views import APIView
+
+from .forms import CustomUserCreationForm, RegistroForm
+from .models import Material, Requisicao
+from .serializers import MaterialSerializer, RequisicaoSerializer
 
 User = get_user_model()
 
@@ -62,7 +60,7 @@ def controle_pedidos(request):
     return render(request, "pedidos/controle.html")
 
 def fazer_requisicao(request):
-    return render(request, "home/fazer.html")
+    return render(request, "pedidos/fazer.html")
 
 def acompanhar_requisicoes(request):
     return render(request, "requisicoes/acompanhar.html")
@@ -116,7 +114,7 @@ def dashboard(request):
             }
         else:
             
-            requisicoes_usuario = Requisicao.objects.filter(usuario=request.user)
+            requisicoes_usuario = Requisicao.objects.filter(usuario=request.user) # pylint: disable=no-member
             contexto = {
                 'painel_admin': False,
                 'requisicoes_usuario': requisicoes_usuario,
