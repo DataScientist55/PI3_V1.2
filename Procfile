@@ -1,2 +1,2 @@
-web: gunicorn EstEsc.wsgi:application --log-file -
+web: gunicorn EstEsc.wsgi:application 
 
