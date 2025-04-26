@@ -22,8 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 import os
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-DEBUG = os.getenv("DEBUG", "False") == "True"
+SECRET_KEY = os.getenv("#p!)*&_rw^#j180m6+*(8ylf@d1cv_9qx1@5-kwo-wruna5!bm")
+DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'pi3v12-production.up.railway.app']
 
 
@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': ('estoque'),
         'USER': ('root'),
         'PASSWORD': ('V3cc#!o55#'),
-        'HOST': ('192.168.43.116'),
+        'HOST': ('192.168.15.11'),
         'PORT': ('3306'),
     }
 }
