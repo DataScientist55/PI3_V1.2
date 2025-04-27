@@ -6,6 +6,11 @@ COPY . .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN apt-get update && apt-get install -y \
+    libmysqlclient-dev \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Apenas coleta os estáticos (não faz migrate no build)
 RUN python manage.py collectstatic --noinput
