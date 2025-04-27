@@ -1,4 +1,12 @@
-FROM python:3.12-slim
+FROM python:3.12.10-slim
+
+# Instala as dependências necessárias
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
+    default-libmysqlclient-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
 
 # Define o diretório de trabalho
 WORKDIR /app
@@ -6,7 +14,7 @@ WORKDIR /app
 # Copia os arquivos do projeto para o contêiner
 COPY . /app
 
-# Instala as dependências
+# Instala as dependências do projeto
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
