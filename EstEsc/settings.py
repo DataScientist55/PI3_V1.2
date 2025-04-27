@@ -94,8 +94,11 @@ DATABASES = {
         'NAME': ('estoque'),
         'USER': ('root'),
         'PASSWORD': ('V3cc#!o55#'),
-        'HOST': ('192.168.15.11'),
+        'HOST': ('mysql.railway.internal'),
         'PORT': ('3306'),
+        'OPTIONS': {
+            'connect_timeout': 60, 
+        },
     }
 }
 
