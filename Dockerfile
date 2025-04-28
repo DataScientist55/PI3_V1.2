@@ -1,20 +1,31 @@
-FROM python:3.11-slim
+# Usar uma imagem base do Python
+FROM python:3.12
 
+# Copiar o arquivo de dependências para o contêiner
+COPY requirements.txt /app/
+
+# Instalar dependências para compilar o mysqlclient
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    default-libmysqlclient-dev \
+    build-essential \
+    libssl-dev \
+    libffi-dev
+RUN pip install --upgrade pip
+#RUN pip install -r requirements.txt
+
+# Definir o diretório de trabalho no contêiner
 WORKDIR /app
 
-COPY . .
+# Instalar as dependências do projeto
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-RUN apt-get update && apt-get install -y \
-    libmysqlclient-dev \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Copiar o código do projeto para dentro do contêiner
+COPY . /app/
 
-
-# Apenas coleta os estáticos (não faz migrate no build)
-RUN python manage.py collectstatic --noinput
-
+# Expor a porta 8000 para o servidor Django
 EXPOSE 8000
 
-CMD ["gunicorn", "seuprojeto.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Comando para rodar o servidor Django
+#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "EstEsc.wsgi:application", "--bind", "0.0.0.0:8000"]

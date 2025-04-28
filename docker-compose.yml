@@ -1,11 +1,15 @@
-version: '3.8'
+version: '3.9'
 
 services:
   db:
     image: mysql:8.0
+    container_name: db
+    restart: always
     environment:
-      MYSQL_DATABASE: railway
-      MYSQL_ROOT_PASSWORD: rRdPwfgCbwgVQLMNPUUwvZbWxqPwHOIgk
+      MYSQL_DATABASE: seu_banco
+      MYSQL_USER: seu_usuario
+      MYSQL_PASSWORD: sua_senha
+      MYSQL_ROOT_PASSWORD: root_senha
     ports:
       - "3306:3306"
     volumes:
@@ -13,24 +17,14 @@ services:
 
   web:
     build: .
-    depends_on:
-      - db
+    container_name: web
+    command: ["./wait-for-db.sh", "gunicorn", "seu_projeto.wsgi:application", "--bind", "0.0.0.0:8000"]
     volumes:
-      - .:/app
+      - .:/code
     ports:
       - "8000:8000"
-    environment:
-      MYSQL_HOST: db
-      MYSQL_DATABASE: railway
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rRdPwfgCbwgVQLMNPUUwvZbWxqPwHOIgk
-      MYSQL_PORT: "3306"
-    command: >
-      bash -c "
-        python manage.py migrate &&
-        python manage.py collectstatic --noinput &&
-        gunicorn EstEsc.wsgi:application --bind 0.0.0.0:8000
-      "
+    depends_on:
+      - db
 
 volumes:
   db_data:

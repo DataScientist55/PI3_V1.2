@@ -11,10 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-import pymysql
-
-pymysql.version_info = (1, 4, 6, "final", 0)
-pymysql.install_as_MySQLdb()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,8 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 import os
 
 SECRET_KEY = os.getenv("#p!)*&_rw^#j180m6+*(8ylf@d1cv_9qx1@5-kwo-wruna5!bm")
-DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'pi3v12-production.up.railway.app']
+DEBUG = False
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production.up.railway.app']
 
 
 
@@ -56,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'EstEsc.urls'
@@ -86,21 +83,20 @@ WSGI_APPLICATION = 'EstEsc.wsgi.application'
 
 
 
-from decouple import config
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': ('estoque'),
-        'USER': ('root'),
-        'PASSWORD': ('V3cc#!o55#'),
-        'HOST': ('mysql.railway.internal'),
-        'PORT': ('3306'),
+        'NAME': os.getenv('MYSQL_DATABASE'),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': os.getenv('MYSQL_HOST'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),  
         'OPTIONS': {
-            'connect_timeout': 60, 
+            'connect_timeout': 60,
         },
     }
 }
+
 
 
 # Password validation
