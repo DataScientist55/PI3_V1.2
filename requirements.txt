@@ -25,3 +25,4 @@ sqlparse==0.5.3
 tomlkit==0.13.2
 types-PyYAML==6.0.12.20250402
 typing_extensions==4.13.2
+dj-database-url

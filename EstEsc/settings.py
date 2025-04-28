@@ -81,8 +81,8 @@ WSGI_APPLICATION = 'EstEsc.wsgi.application'
 
 
 
-import dj_database_url
-import os
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -90,7 +90,7 @@ DATABASES = {
         'USER': 'root',  # Usuário do banco
         'PASSWORD': 'RdPwfgCbwgVQLMNPUUwvZbWxqPwHOIgk',  # Senha do banco
         'HOST': 'switchback.proxy.rlwy.net',  # Host público
-        'PORT': '58831',  # Porta
+        'PORT': '3306',  # Porta
     }
 }
 
