@@ -81,21 +81,19 @@ WSGI_APPLICATION = 'EstEsc.wsgi.application'
 
 
 
-
-
+import dj_database_url
+import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_DATABASE'),
-        'USER': os.getenv('MYSQL_USER'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
-        'HOST': os.getenv('MYSQL_HOST'),
-        'PORT': os.getenv('MYSQL_PORT', '3306'),  
-        'OPTIONS': {
-            'connect_timeout': 60,
-        },
+        'NAME': 'railway',  # Nome do banco de dados
+        'USER': 'root',  # Usuário do banco
+        'PASSWORD': 'RdPwfgCbwgVQLMNPUUwvZbWxqPwHOIgk',  # Senha do banco
+        'HOST': 'switchback.proxy.rlwy.net',  # Host público
+        'PORT': '58831',  # Porta
     }
 }
+
 
 
 
@@ -134,6 +132,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
