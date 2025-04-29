@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Fazer Requisição{% endblock %}
+
+{% block content %}
+    <h2>Fazer Nova Requisição</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="id_material" class="form-label">Material</label>
+            {{ form.material }}
+            <small class="form-text text-muted">
+                Tipo: <span id="tipo-material"></span>
+            </small>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_quantidade" class="form-label">Quantidade</label>
+            {{ form.quantidade }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Enviar Requisição</button>
+        <a href="{% url 'acompanhar_requisicoes' %}" class="btn btn-secondary">Voltar</a>
+    </form>
+
+    <script>
+        const materialSelect = document.getElementById("id_material");
+        const tipoSpan = document.getElementById("tipo-material");
+
+        function updateTipo() {
+            const selectedOption = materialSelect.options[materialSelect.selectedIndex];
+            tipoSpan.innerText = selectedOption.text.includes(' - ') ? selectedOption.text.split(' - ')[1] : '';
+        }
+
+        materialSelect.addEventListener("change", updateTipo);
+        document.addEventListener("DOMContentLoaded", updateTipo);
+    </script>
+{% endblock %}

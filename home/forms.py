@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import Requisicao, Material
 
 User = get_user_model()
 
@@ -21,3 +22,13 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
+
+class RequisicaoForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['material'].queryset = Material.objects.select_related('tipo')
+        self.fields['material'].label_from_instance = lambda obj: f"{obj.nome} - {obj.tipo.nome}"
+
+    class Meta:
+        model = Requisicao
+        fields = ['material', 'quantidade']

@@ -8,7 +8,7 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .forms import CustomUserCreationForm, RegistroForm
+from .forms import CustomUserCreationForm, RegistroForm, RequisicaoForm
 from .models import Material, Requisicao
 from .serializers import MaterialSerializer, RequisicaoSerializer
 
@@ -122,3 +122,13 @@ def dashboard(request):
         return render(request, 'home/dashboard.html', contexto)
     else:
         return redirect('login')
+
+def fazer_requisicao(request):
+    if request.method == 'POST':
+        form = RequisicaoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('acompanhar_requisicoes')
+    else:
+        form = RequisicaoForm()
+    return render(request, 'requisicoes/fazer_requisicao.html', {'form': form})

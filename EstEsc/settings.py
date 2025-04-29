@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = '#p!)*&_rw^#j180m6+*(8ylf@d1cv_9qx1@5-kwo-wruna5!bm'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production.up.railway.app']
 
@@ -59,14 +59,11 @@ WSGI_APPLICATION = 'EstEsc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'railway',
-        'USER': 'root',
-        'PASSWORD': 'RdPwfgCbwgVQLMNPUUwvZbWxqPwHOIgk',
-        'HOST': 'switchback.proxy.rlwy.net',
-        'PORT': '58831',
-        'OPTIONS': {
-            'connect_timeout': 60,  
-        },
+        'NAME': 'estoque_db',
+        'USER': 'vecchio',
+        'PASSWORD': 'V3cc#!o55#',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
