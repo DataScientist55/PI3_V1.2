@@ -82,7 +82,7 @@ if DJANGO_ENV == 'production':
         'USER': os.getenv('MYSQLUSER'),
         'PASSWORD': os.getenv('MYSQLPASSWORD'),
         'HOST': os.getenv('MYSQLHOST'),
-        'PORT': os.getenv('MYSQLPORT'),
+        'PORT': os.getenv('MYSQLPORT', '3306'),
     }
 }
 
