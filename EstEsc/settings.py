@@ -3,11 +3,15 @@ import os
 
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = '#p!)*&_rw^#j180m6+*(8ylf@d1cv_9qx1@5-kwo-wruna5!bm'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production.up.railway.app']
 
@@ -59,13 +63,14 @@ WSGI_APPLICATION = 'EstEsc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'estoque_db',
-        'USER': 'vecchio',
-        'PASSWORD': 'V3cc#!o55#',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': os.getenv('MYSQLDATABASE', 'railway'),
+        'USER': os.getenv('MYSQLUSER', 'vecchio'),
+        'PASSWORD': os.getenv('MYSQLPASSWORD', 'V3cc#!o55#'),
+        'HOST': os.getenv('MYSQLHOST', 'localhost'),
+        'PORT': os.getenv('MYSQLPORT', '3306'),
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
