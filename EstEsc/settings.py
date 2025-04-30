@@ -84,7 +84,7 @@ if DJANGO_ENV == 'production':
         'HOST': os.getenv('STACKHERO_MYSQL_HOST'),
         'PORT': os.getenv('STACKHERO_MYSQL_PORT'),
         'OPTIONS': {
-            'ssl': {'ca': os.path.join(BASE_DIR, 'https://letsencrypt.org/certs/isrgrootx1.pem'),},
+            'ssl': {'ca': os.path.join(BASE_DIR, 'isrgrootx1.pem'),},
         },
     }
 }
