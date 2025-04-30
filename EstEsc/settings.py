@@ -1,17 +1,20 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
-# Caminho base do projeto
+# Definir o diretório base
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Carregando variáveis de ambiente do arquivo .env
+# Tentar carregar variáveis de ambiente do arquivo .env
 try:
     from dotenv import load_dotenv
-    load_dotenv(dotenv_path=BASE_DIR / '.env')
+    load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))
 except ImportError:
     pass
 
-# Chave secreta do Django
+# Definir ambiente
+DJANGO_ENV = os.getenv('DJANGO_ENV', 'development')
+
+# Chave secreta para o Django
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
 
 # Debug
@@ -35,23 +38,26 @@ INSTALLED_APPS = [
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise para arquivos estáticos em produção
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-# URL principal
+# Middleware WhiteNoise
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
+# URL Conf
 ROOT_URLCONF = 'EstEsc.urls'
 
-# Templates
+# Configuração de templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Pasta de templates
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,55 +70,60 @@ TEMPLATES = [
     },
 ]
 
-# WSGI
+# Configuração de WSGI
 WSGI_APPLICATION = 'EstEsc.wsgi.application'
 
-# Banco de dados MySQL via variáveis de ambiente
-DATABASES = {
+# Configuração do banco de dados
+if DJANGO_ENV == 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('MYSQLDATABASE', 'railway'),
+            'USER': os.getenv('MYSQLUSER', 'root'),
+            'PASSWORD': os.getenv('MYSQLPASSWORD', 'V3cc#!o55#'),
+            'HOST': os.getenv('MYSQLHOST', 'mysql.railway.internal'),
+            'PORT': os.getenv('MYSQLPORT', '3306'),
+        }
+    }
+else:  # Desenvolvimento local
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQLDATABASE', 'railway'),
-        'USER': os.getenv('MYSQLUSER', 'root'),
-        'PASSWORD': os.getenv('MYSQLPASSWORD', ''),
-        'HOST': os.getenv('MYSQLHOST', 'localhost'),
-        'PORT': os.getenv('MYSQLPORT', '3306'),
+        'NAME': 'railway',
+        'USER': 'vecchio',
+        'PASSWORD': 'V3cc#!o55#',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
-# Validação de senhas
+
+# Validadores de senha
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Localização
+# Configuração de idioma e fuso horário
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# Arquivos estáticos
+# Configuração de arquivos estáticos
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Durante o desenvolvimento
-STATIC_ROOT = BASE_DIR / 'staticfiles'    # Para produção (collectstatic)
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Modelo de usuário customizado
+# Default auto field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Modelo de usuário personalizado
 AUTH_USER_MODEL = 'home.Usuario'
 
-# Redirecionamentos de login/logout
+# Configurações de login/logout
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
-# Campo padrão para novos modelos
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
