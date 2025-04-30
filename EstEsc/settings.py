@@ -12,7 +12,7 @@ except ImportError:
     pass
 
 # Definir ambiente
-DJANGO_ENV = os.getenv('DJANGO_ENV', 'development')
+DJANGO_ENV = os.getenv('DJANGO_ENV', 'production')
 
 # Chave secreta para o Django
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosts permitidos
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production-35f4b.up.railway.app']
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production-35f4b.up.railway.app', 'ow4crw.stackhero-network.com']
 
 # Aplicações instaladas
 INSTALLED_APPS = [
