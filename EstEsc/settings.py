@@ -84,7 +84,7 @@ if DJANGO_ENV == 'production':
         'HOST': os.getenv('STACKHERO_MYSQL_HOST'),
         'PORT': os.getenv('STACKHERO_MYSQL_PORT'),
         'OPTIONS': {
-            'ssl_mode': 'REQUIRED',
+            'ssl': {'ca': os.getenv('STACKHERO_MYSQL_SSL_CA')},
         },
     }
 }
