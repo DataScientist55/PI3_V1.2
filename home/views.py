@@ -110,6 +110,7 @@ def dashboard(request):
                 'painel_admin': True,
                 'requisicoes': requisicoes,
                 'materiais': materiais,
+                
                 'pendentes': pendentes,
             }
         else:

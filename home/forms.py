@@ -37,5 +37,5 @@ class RequisicaoForm(forms.ModelForm):
 class MaterialForm(forms.ModelForm):
     class Meta:
         model = Material
-        fields = ['nome', 'tipo', 'quantidade', 'descricao']
+        fields = ['nome', 'tipo', 'quantidade']
       
