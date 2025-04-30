@@ -16,7 +16,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production.up.railway.app']
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production-48140.up.railway.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
