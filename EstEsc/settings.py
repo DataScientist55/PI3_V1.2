@@ -83,6 +83,9 @@ if DJANGO_ENV == 'production':
         'PASSWORD': os.getenv('MYSQLPASSWORD'),
         'HOST': os.getenv('MYSQLHOST'),
         'PORT': os.getenv('MYSQLPORT'),
+        'OPTIONS': {
+            'ssl_mode': 'REQUIRED',
+        }
     }
 }
 
