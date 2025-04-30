@@ -75,16 +75,17 @@ WSGI_APPLICATION = 'EstEsc.wsgi.application'
 
 # Configuração do banco de dados
 if DJANGO_ENV == 'production':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('MYSQLDATABASE', 'railway'),
-            'USER': os.getenv('MYSQLUSER', 'root'),
-            'PASSWORD': os.getenv('MYSQLPASSWORD', 'V3cc#!o55#'),
-            'HOST': os.getenv('MYSQLHOST', 'mysql.railway.internal'),
-            'PORT': os.getenv('MYSQLPORT', '3306'),
-        }
+   DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('MYSQLDATABASE'),
+        'USER': os.getenv('MYSQLUSER'),
+        'PASSWORD': os.getenv('MYSQLPASSWORD'),
+        'HOST': os.getenv('MYSQLHOST'),
+        'PORT': os.getenv('MYSQLPORT'),
     }
+}
+
 else:  # Desenvolvimento local
     DATABASES = {
     'default': {
