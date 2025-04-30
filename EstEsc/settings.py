@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosts permitidos
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production-48140.up.railway.app']
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production-35f4b.up.railway.app']
 
 # Aplicações instaladas
 INSTALLED_APPS = [
