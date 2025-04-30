@@ -66,7 +66,12 @@ def cadastrar_material(request):
     return render(request, "materiais/cadastrar.html", context)
 
 def listar_materiais(request):
-    return render(request, "materiais/listar.html")
+    lista_de_materias = Material.objects.all().order_by('ID')
+
+    context = {
+        'materiais': lista_de_materias,
+    }
+    return render(request, "materiais/listar.html", context)
 
 def controle_pedidos(request):
     return render(request, "pedidos/controle.html")
