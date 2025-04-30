@@ -52,7 +52,7 @@ def contato(request):
 
 def cadastrar_material(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
+        form = MaterialForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Material cadastrado com sucesso!')
