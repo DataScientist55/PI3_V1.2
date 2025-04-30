@@ -60,7 +60,10 @@ def cadastrar_material(request):
 
     else:
         form = MaterialForm()
-    return render(request, "materiais/cadastrar.html")
+        context = {
+            'form': form,
+        }   
+    return render(request, "materiais/cadastrar.html", context)
 
 def listar_materiais(request):
     return render(request, "materiais/listar.html")
