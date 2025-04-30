@@ -78,11 +78,11 @@ if DJANGO_ENV == 'production':
    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQLDATABASE'),
-        'USER': os.getenv('MYSQLUSER'),
-        'PASSWORD': os.getenv('MYSQLPASSWORD'),
-        'HOST': os.getenv('MYSQLHOST'),
-        'PORT': os.getenv('MYSQLPORT'),
+        'NAME': 'STACKHERO_MYSQL_DB_NAME',
+        'USER': 'STACKHERO_MYSQL_USER',
+        'PASSWORD': 'STACKHERO_MYSQL_ROOT_PASSWORD',
+        'HOST': 'STACKHERO_MYSQL_HOST',
+        'PORT': 'STACKHERO_MYSQL_PORT',
         'OPTIONS': {
             'ssl_mode': 'REQUIRED',
         }
