@@ -8,7 +8,7 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .forms import CustomUserCreationForm, RegistroForm, RequisicaoForm
+from .forms import CustomUserCreationForm, MaterialForm, RegistroForm, RequisicaoForm
 from .models import Material, Requisicao
 from .serializers import MaterialSerializer, RequisicaoSerializer
 
@@ -51,6 +51,15 @@ def contato(request):
     return render(request, "home/contato.html")
 
 def cadastrar_material(request):
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Material cadastrado com sucesso!')
+            return redirect('listar_materiais')
+
+    else:
+        form = MaterialForm()
     return render(request, "materiais/cadastrar.html")
 
 def listar_materiais(request):
@@ -110,7 +119,7 @@ def dashboard(request):
                 'painel_admin': True,
                 'requisicoes': requisicoes,
                 'materiais': materiais,
-                
+
                 'pendentes': pendentes,
             }
         else:
