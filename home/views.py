@@ -132,3 +132,4 @@ def fazer_requisicao(request):
     else:
         form = RequisicaoForm()
     return render(request, 'requisicoes/fazer_requisicao.html', {'form': form})
+
