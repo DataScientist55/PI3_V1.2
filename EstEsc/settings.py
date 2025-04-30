@@ -83,9 +83,7 @@ if DJANGO_ENV == 'production':
         'PASSWORD': 'STACKHERO_MYSQL_ROOT_PASSWORD',
         'HOST': 'STACKHERO_MYSQL_HOST',
         'PORT': 'STACKHERO_MYSQL_PORT',
-        'OPTIONS': {
-            'ssl_mode': 'REQUIRED',
-        }
+       
     }
 }
 
