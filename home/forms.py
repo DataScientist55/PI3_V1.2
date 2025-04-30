@@ -38,7 +38,4 @@ class MaterialForm(forms.ModelForm):
     class Meta:
         model = Material
         fields = ['nome', 'tipo', 'quantidade', 'descricao']
-        widgets = {
-            'tipo': forms.Select(attrs={'class': 'form-control'}),
-            'quantidade': forms.NumberInput(attrs={'class': 'form-control'}),
-        }
+      
