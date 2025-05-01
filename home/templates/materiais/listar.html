@@ -21,6 +21,7 @@
                 <td>{{ materiais.nome }}</td>
                 <td>{{ materiais.categoria }}</td>
                 <td>{{ materiais.quantidade }}</td>
+                <td>{{ materiais.tipo }}</td>
                 <td>
                     <a href="{% url 'editar_material' material.id %}" class="btn btn-warning btn-sm">Editar</a>
                     <a href="{% url 'excluir_material' material.id %}" class="btn btn-danger btn-sm">Excluir</a>
