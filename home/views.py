@@ -111,21 +111,7 @@ def listar_materiais(request):
 def controle_pedidos(request):
     return render(request, "pedidos/controle.html")
 
-def fazer_requisicao(request):
-    
-    if request.method == 'POST':
-        form = RequisicaoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Requisição feita com sucesso!')
-            return redirect('acompanhar_requisicoes')
-        else:
-            messages.error(request, 'Erro ao fazer a requisição. Verifique os dados e tente novamente.')
 
-        
-        #________________________________________________________________________________________####
-
-    return render(request, "pedidos/fazer.html")
 
 def acompanhar_requisicoes(request):
     return render(request, "requisicoes/acompanhar.html")
@@ -189,15 +175,40 @@ def dashboard(request):
     else:
         return redirect('login')
 
+
+@login_required
 def fazer_requisicao(request):
     if request.method == 'POST':
         form = RequisicaoForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('acompanhar_requisicoes')
+            try: 
+                requisicao = form.save(commit=False)
+
+                requisicao.usuario = request.user  # Atribui o usuário autenticado
+                requisicao.save()
+                messages.success(request, 'Requisição realizada com sucesso!')
+                return redirect('acompanhar_requisicoes')
+            except Exception as e:
+                logger.error(f"Erro ao salvar a requisição: {e}\n{traceback.format_exc()}")
+                messages.error(request, 'Ocorreu um erro ao realizar a requisição.')
+
+                context = {'form': form}
+
+                return render(request, 'requisicoes/fazer_requisicao.html', context)
+        else:
+            messages.error(request, 'Erro ao validar o formulário. Verifique os dados e tente novamente.')
+
+            context = {'form': form}
+
+            return render(request, 'requisicoes/fazer_requisicao.html', context)
     else:
         form = RequisicaoForm()
-    return render(request, 'requisicoes/fazer_requisicao.html', {'form': form})
+
+    context = {
+        'form': form
+        }
+
+    return  render(request, 'requisicoes/fazer_requisicao.html', context)
 
 def  editar_material(request, pk):
     '''
