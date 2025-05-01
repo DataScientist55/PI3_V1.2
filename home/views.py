@@ -66,7 +66,7 @@ def cadastrar_material(request):
     return render(request, "materiais/cadastrar.html", context)
 
 def listar_materiais(request):
-    lista_de_materias = Material.objects.all().order_by('ID')
+    lista_de_materias = Material.objects.all()
 
     context = {
         'materiais': lista_de_materias,
