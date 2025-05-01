@@ -13,6 +13,7 @@ from .forms import CustomUserCreationForm, MaterialForm,  RequisicaoForm
 from .models import Material, Requisicao
 from .serializers import MaterialSerializer, RequisicaoSerializer
 from home import models
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
@@ -234,36 +235,7 @@ def  editar_material(request, pk):
 
     return render(request, 'materiais/editar.html', context)
 
-# def excluir_material(request, pk):
-#     '''
-#     Exclui um material existente.
-#     Se o método for POST, tenta excluir o material. Se a exclusão for bem-sucedida, redireciona para a lista de materiais.
-#     Se o método for GET, exibe uma confirmação de exclusão.
-#     Se o material estiver referenciado em outros registros, exibe uma mensagem de erro.
-#     '''
-#     material = get_object_or_404(Material, pk=pk)
 
-#     if request.method == 'POST':
-#         try:
-#             logger.error(f"Método POST detectado para exclusão PK: {pk}")
-#             material.delete()
-#             messages.success(request, f'Material {material.nome} foi excluído com sucesso!')
-#             return redirect('listar_materiais')
-        
-#         except models.ProtectedError:
-#             messages.error(request, f'Não é possível excluir o material "{material.nome}" \
-#             pois ele está referenciado em outros registros (ex: requisições).')
-#             return redirect('listar_materiais')
-
-#         except Exception as erro:  
-#             messages.error(request, f'Erro ao excluir o material {material.nome}: {erro}')
-#             return redirect('listar_materiais')
-#     else:
-#         context = {
-#             'material': material
-#         }
-        
-#         return render(request, 'materiais/excluir.html', context)
 
 logger = logging.getLogger(__name__)
 
