@@ -114,6 +114,13 @@ def listar_materiais(request):
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def controle_pedidos(request):
+    
+    requisicoes_pendentes = Requisicao.objects.filter(status='Pendente').select_related(
+        'usuario', 'material', 'categoria'
+    ).order_by('data_requisicao')
+
+
+
     return render(request, "pedidos/controle.html")
 
 # ==================================================================> aqui <===
