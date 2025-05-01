@@ -27,7 +27,7 @@ class RequisicaoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['material'].queryset = Material.objects.select_related('tipo')
-        self.fields['material'].label_from_instance = lambda obj: f"{obj.nome} - {obj.tipo.nome}"
+        self.fields['material'].label_from_instance = lambda obj: f"{obj.nome}{f' - {obj.tipo.nome}' if obj.tipo else ' - Sem Tipo'}"
 
     class Meta:
         model = Requisicao
