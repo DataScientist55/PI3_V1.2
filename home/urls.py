@@ -13,5 +13,7 @@ urlpatterns = [
     path('acompanhar/', views.acompanhar_requisicoes, name='acompanhar_requisicoes'),
     path('login/', views.login_view, name='login'),
     path('materiais/', views.MateriaisListView.as_view(), name='api_materiais'),
-    path('requisicoes/', views.RequisicoesListView.as_view(), name='api_requisicoes'), 
+    path('requisicoes/', views.RequisicoesListView.as_view(), name='api_requisicoes'),
+    path('materiais/<int:pk>/editar/', views.editar_material, name='editar_material'),
+    path('materiais/<int:pk>/deletar/', views.excluir_material, name='excluir_material'), 
 ]
