@@ -1,4 +1,4 @@
-<!-- {% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Lista de Materiais{% endblock %}
 
@@ -28,27 +28,6 @@
                 </td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-    <a href="{% url 'cadastrar_material' %}" class="btn btn-primary mt-3">Adicionar Novo Material</a>
-{% endblock %} -->
-
-{% extends "base.html" %}
-{% block title %}Lista de Materiais{% endblock %}
-{% block content %}
-    <h2>Lista de Materiais</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Categoria</th> {# Ou Tipo? #}
-                <th>Quantidade</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {# Conteúdo removido temporariamente #}
         </tbody>
     </table>
     <a href="{% url 'cadastrar_material' %}" class="btn btn-primary mt-3">Adicionar Novo Material</a>
