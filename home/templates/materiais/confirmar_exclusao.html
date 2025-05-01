@@ -1,0 +1,16 @@
+{# templates/materiais/confirmar_exclusap.html #}
+{% extends "base.html" %}
+
+{% block tittle %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+    <h2>Confirmar Exclusão</h2>
+    <p>Tem certeza que deseja excluir o material <Strong>{{ material.nome }}</Strong></p>
+
+    <form method = "POST" action="{% url 'excluir_material' material.pk %}"> {# Action aponta para mesma URL #}
+        {% csrf_token %}
+        <button type="submit" class="bnt btn-danger">Sim, Excluir</button>
+
+        <a href = "{% url 'materiais' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock %}

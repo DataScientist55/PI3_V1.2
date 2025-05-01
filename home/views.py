@@ -2,17 +2,17 @@ import logging
 import traceback
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import redirect, render
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .forms import CustomUserCreationForm, MaterialForm, RegistroForm, RequisicaoForm
+from .forms import CustomUserCreationForm, MaterialForm,  RequisicaoForm
 from .models import Material, Requisicao
 from .serializers import MaterialSerializer, RequisicaoSerializer
+from home import models
 
 User = get_user_model()
 
@@ -185,4 +185,58 @@ def fazer_requisicao(request):
     else:
         form = RequisicaoForm()
     return render(request, 'requisicoes/fazer_requisicao.html', {'form': form})
+
+def  editar_material(request, pk):
+    '''
+    Edita um material existente.
+    Se o método for POST, tenta salvar as alterações. Se o formulário for válido, redireciona para a lista de materiais.
+    Se o método for GET, exibe o formulário com os dados do material existente.
+    '''
+    material = get_object_or_404(Material, pk=pk)
+    if request.method == 'POST':
+        form = MaterialForm(request.POST, instance=material)
+        if  form.is_valid():
+            form.save()
+            messages.success(request, f'Material {material.nome} foi atualizado com sucesso!')
+            return redirect('listar_materiais')
+    
+    form = MaterialForm(instance=material)
+
+    context = {
+        'form': form,
+        'material': material
+    }
+
+    return HttpResponse('materiais/editar.html', context)
+
+def excluir_material(request, pk):
+    '''
+    Exclui um material existente.
+    Se o método for POST, tenta excluir o material. Se a exclusão for bem-sucedida, redireciona para a lista de materiais.
+    Se o método for GET, exibe uma confirmação de exclusão.
+    Se o material estiver referenciado em outros registros, exibe uma mensagem de erro.
+    '''
+    material = get_object_or_404(Material, pk=pk)
+
+    if request.method == 'POST':
+        try:
+            material.delete()
+            messages.success(request, f'Material {material.nome} foi excluído com sucesso!')
+            return redirect('listar_materiais')
+        
+        except models.ProtectedError:
+            messages.error(request, f'Não é possível excluir o material "{material.nome}" \
+            pois ele está referenciado em outros registros (ex: requisições).')
+            return redirect('listar_materiais')
+
+        except Exception as erro:  
+            messages.error(request, f'Erro ao excluir o material {material.nome}: {erro}')
+            return redirect('listar_materiais')
+    
+    context = {
+        'material': material
+    }
+    
+    return render(request, 'materiais/excluir.html', context)
+
 
