@@ -9,6 +9,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Material</th>
                 <th>Categoria</th>
                 <th>Quantidade Atual</th>
@@ -17,6 +18,7 @@
         <tbody>
             {% for material in materiais %}
             <tr>
+                <td>{{ material.id }}</td>
                 <td>{{ material.nome }}</td>
                 <td>{{ material.categoria }}</td>
                 <td>{{ material.quantidade }}</td>
