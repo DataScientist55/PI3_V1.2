@@ -117,11 +117,15 @@ def controle_pedidos(request):
     
     requisicoes_pendentes = Requisicao.objects.filter(status='Pendente').select_related(
         'usuario', 'material', 'categoria'
-    ).order_by('data_requisicao')
+    ).order_by('criaado_em')
+
+    context = {
+        'requisicoes_pendentes': requisicoes_pendentes,
+    }
 
 
 
-    return render(request, "pedidos/controle.html")
+    return render(request, "pedidos/controle.html", context)
 
 # ==================================================================> aqui <===
 
