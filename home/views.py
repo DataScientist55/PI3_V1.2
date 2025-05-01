@@ -200,14 +200,15 @@ def  editar_material(request, pk):
             messages.success(request, f'Material {material.nome} foi atualizado com sucesso!')
             return redirect('listar_materiais')
     
-    form = MaterialForm(instance=material)
+    else:
+        form = MaterialForm(instance=material)
 
-    context = {
-        'form': form,
-        'material': material
-    }
+        context = {
+            'form': form,
+            'material': material
+        }
 
-    return HttpResponse('materiais/editar.html', context)
+    return render(request, 'materiais/editar.html', context)
 
 def excluir_material(request, pk):
     '''
@@ -232,11 +233,11 @@ def excluir_material(request, pk):
         except Exception as erro:  
             messages.error(request, f'Erro ao excluir o material {material.nome}: {erro}')
             return redirect('listar_materiais')
-    
-    context = {
-        'material': material
-    }
-    
-    return render(request, 'materiais/excluir.html', context)
+    else:
+        context = {
+            'material': material
+        }
+        
+        return render(request, 'materiais/excluir.html', context)
 
 

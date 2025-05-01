@@ -1,0 +1,15 @@
+{# templates/materiais/editar.html #}
+{% extends "base.html" %}
+
+{% block title %}Editar Material{% endblock %}
+
+{% block content %}
+    <h2>Editar Material: {{ material.nome }}</h2> {# Mostra o nome do material #}
+
+    <form method="post"> {# O formulário envia POST para a mesma URL de edição #}
+        {% csrf_token %}
+        {{ form.as_p }} {# Renderiza o formulário pré-preenchido #}
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <a href="{% url 'listar_materiais' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock %}
