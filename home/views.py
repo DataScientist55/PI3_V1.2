@@ -112,6 +112,19 @@ def controle_pedidos(request):
     return render(request, "pedidos/controle.html")
 
 def fazer_requisicao(request):
+    
+    if request.method == 'POST':
+        form = RequisicaoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Requisição feita com sucesso!')
+            return redirect('acompanhar_requisicoes')
+        else:
+            messages.error(request, 'Erro ao fazer a requisição. Verifique os dados e tente novamente.')
+
+        
+        #________________________________________________________________________________________####
+
     return render(request, "pedidos/fazer.html")
 
 def acompanhar_requisicoes(request):
