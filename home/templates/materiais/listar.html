@@ -9,19 +9,19 @@
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Categoria</th>
+                <th>Categoria</th>s
                 <th>Quantidade</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            {% for Material in materiais %}
+            {% for material in materiais %}
             <tr>
                 <td>{{ materiais.id }}</td>
                 <td>{{ materiais.nome }}</td>
                 <td>{{ materiais.categoria }}</td>
                 <td>{{ materiais.quantidade }}</td>
-                <td>{{ materiais.tipo }}</td>
+                <td>{% if material.tipo %}{{ material.tipo.nome }}{% else %}Sem Tipo{% endif %}</td>
                 <td>
                     <a href="{% url 'editar_material' material.id %}" class="btn btn-warning btn-sm">Editar</a>
                     <a href="{% url 'excluir_material' material.id %}" class="btn btn-danger btn-sm">Excluir</a>

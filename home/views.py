@@ -1,3 +1,5 @@
+import logging
+import traceback
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.forms import UserCreationForm
@@ -65,13 +67,46 @@ def cadastrar_material(request):
         }   
     return render(request, "materiais/cadastrar.html", context)
 
-def listar_materiais(request):
-    lista_de_materias = Material.objects.all()
+logger = logging.getLogger(__name__)
 
-    context = {
-        'materiais': lista_de_materias,
-    }
-    return render(request, "materiais/listar.html", context)
+def listar_materiais(request):
+    # lista_de_materias = Material.objects.all()
+
+    # context = {
+    #     'materiais': lista_de_materias,
+    # }
+    # return render(request, "materiais/listar.html", context)
+
+    logger.error("--- Entrando na view listar_materiais ---") # Log de entrada
+    lista_de_materias = None # Inicializa para garantir que existe
+    context = {} # Inicializa contexto
+    try:
+        logger.error("Tentando executar Material.objects.all()")
+        lista_de_materias = Material.objects.all()
+        count = lista_de_materias.count() # Força a contagem para ver se a query básica funciona
+        logger.error(f"Consulta Material.objects.all() retornou {count} itens.")
+
+        context = {
+            'materiais': lista_de_materias,
+        }
+        logger.error("Contexto criado. Tentando renderizar o template...")
+
+       
+        response = render(request, "materiais/listar.html", context)
+        logger.error("--- Renderização concluída com sucesso. Saindo da view. ---")
+        return response
+
+    except Exception as e:
+        # Se QUALQUER exceção ocorrer dentro do bloco try:
+        logger.error(f"!!! EXCEÇÃO CAPTURADA na view listar_materiais !!!")
+        logger.error(f"Tipo de Erro: {type(e).__name__}")
+        logger.error(f"Mensagem de Erro: {e}")
+        # Logar o traceback completo formatado
+        logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
+
+        # Retornar uma resposta de erro genérica para o usuário
+        from django.http import HttpResponseServerError
+        return HttpResponseServerError("Ocorreu um erro interno no servidor ao listar materiais.")
 
 def controle_pedidos(request):
     return render(request, "pedidos/controle.html")

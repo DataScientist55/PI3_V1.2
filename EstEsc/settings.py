@@ -12,7 +12,7 @@ except ImportError:
     pass
 
 # Definir ambiente
-DJANGO_ENV = os.getenv('DJANGO_ENV', 'production')
+DJANGO_ENV = os.getenv('DJANGO_ENV', 'local')
 
 # Chave secreta para o Django
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
