@@ -129,7 +129,8 @@ def acompanhar_requisicoes(request):
             messages.error(request, 'Requisição não encontrada.')
     else:
         requisicoes = Requisicao.objects.filter(usuario=request.user)
-        
+        return render(request, "requisicoes/acompanhar.html", {'requisicoes': requisicoes})
+
     return render(request, "requisicoes/acompanhar.html")
 
 def login_view(request):
