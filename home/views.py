@@ -2,7 +2,7 @@ import logging
 import traceback
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from rest_framework import permissions, viewsets
@@ -210,34 +210,98 @@ def  editar_material(request, pk):
 
     return render(request, 'materiais/editar.html', context)
 
+# def excluir_material(request, pk):
+#     '''
+#     Exclui um material existente.
+#     Se o método for POST, tenta excluir o material. Se a exclusão for bem-sucedida, redireciona para a lista de materiais.
+#     Se o método for GET, exibe uma confirmação de exclusão.
+#     Se o material estiver referenciado em outros registros, exibe uma mensagem de erro.
+#     '''
+#     material = get_object_or_404(Material, pk=pk)
+
+#     if request.method == 'POST':
+#         try:
+#             logger.error(f"Método POST detectado para exclusão PK: {pk}")
+#             material.delete()
+#             messages.success(request, f'Material {material.nome} foi excluído com sucesso!')
+#             return redirect('listar_materiais')
+        
+#         except models.ProtectedError:
+#             messages.error(request, f'Não é possível excluir o material "{material.nome}" \
+#             pois ele está referenciado em outros registros (ex: requisições).')
+#             return redirect('listar_materiais')
+
+#         except Exception as erro:  
+#             messages.error(request, f'Erro ao excluir o material {material.nome}: {erro}')
+#             return redirect('listar_materiais')
+#     else:
+#         context = {
+#             'material': material
+#         }
+        
+#         return render(request, 'materiais/excluir.html', context)
+
+logger = logging.getLogger(__name__)
+
+# ... (outras views) ...
+
 def excluir_material(request, pk):
-    '''
-    Exclui um material existente.
-    Se o método for POST, tenta excluir o material. Se a exclusão for bem-sucedida, redireciona para a lista de materiais.
-    Se o método for GET, exibe uma confirmação de exclusão.
-    Se o material estiver referenciado em outros registros, exibe uma mensagem de erro.
-    '''
-    material = get_object_or_404(Material, pk=pk)
+    logger.error(f"--- Entrando na view excluir_material para PK: {pk} ---")
+    material = None # Inicializa
 
     if request.method == 'POST':
+        logger.error(f"Método POST detectado para exclusão PK: {pk}")
         try:
+            logger.error("Tentando buscar material via get_object_or_404 (POST)...")
+            material = get_object_or_404(Material, pk=pk)
+            logger.error(f"Material '{material.nome}' encontrado para exclusão.")
+            nome_material_excluido = material.nome
             material.delete()
-            messages.success(request, f'Material {material.nome} foi excluído com sucesso!')
+            logger.error(f"Material '{nome_material_excluido}' deletado com sucesso.")
+            messages.success(request, f'Material "{nome_material_excluido}" excluído com sucesso!')
             return redirect('listar_materiais')
-        
         except models.ProtectedError:
-            messages.error(request, f'Não é possível excluir o material "{material.nome}" \
-            pois ele está referenciado em outros registros (ex: requisições).')
+            logger.error(f"ProtectedError ao tentar excluir material PK: {pk} (Nome: {getattr(material, 'nome', 'N/A')})")
+            messages.error(request, f'Não é possível excluir o material "{getattr(material, "nome", "ID "+str(pk))}" pois ele está referenciado em outros registros.')
             return redirect('listar_materiais')
+        except Material.DoesNotExist:
+            # get_object_or_404 já lida com isso, mas para segurança extra no log
+            logger.error(f"Material com PK: {pk} não encontrado durante POST.")
+            messages.error(request, f'Material com ID {pk} não encontrado para exclusão.')
+            return redirect('listar_materiais')
+        except Exception as e:
+            logger.error(f"!!! EXCEÇÃO CAPTURADA no POST de excluir_material PK: {pk} !!!")
+            logger.error(f"Tipo de Erro: {type(e).__name__}")
+            logger.error(f"Mensagem de Erro: {e}")
+            logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
+            messages.error(request, f'Ocorreu um erro inesperado ao tentar excluir o material.')
+            return redirect('listar_materiais') # Ou renderizar uma página de erro
 
-        except Exception as erro:  
-            messages.error(request, f'Erro ao excluir o material {material.nome}: {erro}')
-            return redirect('listar_materiais')
-    else:
-        context = {
-            'material': material
-        }
-        
-        return render(request, 'materiais/excluir.html', context)
+    else: # request.method == 'GET'
+        logger.error(f"Método GET detectado para exclusão PK: {pk}")
+        try:
+            logger.error("Tentando buscar material via get_object_or_404 (GET)...")
+            material = get_object_or_404(Material, pk=pk)
+            logger.error(f"Material '{material.nome}' encontrado para confirmação.")
+            context = {
+                'material': material
+            }
+            logger.error("Contexto criado. Tentando renderizar confirmar_exclusao.html...")
+            response = render(request, 'materiais/confirmar_exclusao.html', context)
+            logger.error("--- Renderização de confirmar_exclusao.html concluída com sucesso. ---")
+            return response
+        except Material.DoesNotExist:
+             # get_object_or_404 lida com isso, mas logamos explicitamente
+            logger.error(f"Material com PK: {pk} não encontrado durante GET para confirmação.")
+            # O get_object_or_404 já deve ter retornado 404 aqui, mas se não:
+            from django.http import Http404
+            raise Http404(f"Material com ID {pk} não encontrado.")
+        except Exception as e:
+            logger.error(f"!!! EXCEÇÃO CAPTURADA no GET de excluir_material PK: {pk} !!!")
+            logger.error(f"Tipo de Erro: {type(e).__name__}")
+            logger.error(f"Mensagem de Erro: {e}")
+            logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
+            # Retornar erro 500 manual, já que o render pode ter falhado
+            return HttpResponseServerError("Ocorreu um erro interno ao preparar a página de confirmação de exclusão.")
 
 
