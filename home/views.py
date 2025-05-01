@@ -113,8 +113,23 @@ def controle_pedidos(request):
     return render(request, "pedidos/controle.html")
 
 
-
+@login_required
 def acompanhar_requisicoes(request):
+
+    if request.method == 'POST':
+        requisicao_id = request.POST.get('requisicao_id')
+        status = request.POST.get('status')
+
+        try:
+            requisicao = Requisicao.objects.get(id=requisicao_id)
+            requisicao.status = status
+            requisicao.save()
+            messages.success(request, 'Status atualizado com sucesso!')
+        except Requisicao.DoesNotExist:
+            messages.error(request, 'Requisição não encontrada.')
+    else:
+        requisicoes = Requisicao.objects.filter(usuario=request.user)
+        
     return render(request, "requisicoes/acompanhar.html")
 
 def login_view(request):
