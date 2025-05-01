@@ -22,11 +22,13 @@
                 <td>{{ material.nome }}</td>
                 <td>{{ material.categoria }}</td>
                 <td>{{ material.quantidade }}</td>
+                <td>
+                    <a href="{% url 'cadastrar_material' %}" class="btn btn-success">Adicionar Material</a>
+                    <a href="{% url 'listar_materiais' %}" class="btn btn-primary">Gerenciar Materiais</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     
-    <a href="{% url 'cadastrar_material' %}" class="btn btn-success">Adicionar Material</a>
-    <a href="{% url 'listar_materiais' %}" class="btn btn-primary">Gerenciar Materiais</a>
 {% endblock %}
