@@ -340,11 +340,31 @@ def register(request):
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def gerenciar_usuarios(request):
-    usuarios = User.objects.all()
-    context = {
-        'usuarios': usuarios,
-    }
-    return render(request, 'usuarios/gerenciar_users.html', context)
+    logger.info(f"--- Entrando na view gerenciar_usuarios (Admin: {request.user.username}) ---")
+    try:
+        
+        lista_usuarios = User.objects.exclude(pk=request.user.pk).order_by('username')
+
+        logger.info(f"Consulta retornou {lista_usuarios.count()} usuários.")
+
+        context = {
+           
+            'users': lista_usuarios,
+        }
+
+        logger.info("Contexto criado. Tentando renderizar home/gerenciar_users.html...")
+      
+        response = render(request, 'home/gerenciar_users.html', context)
+        logger.info("--- Renderização de gerenciar_users.html concluída. ---")
+        return response
+
+    except Exception as e:
+        logger.error(f"!!! EXCEÇÃO CAPTURADA na view gerenciar_usuarios !!!")
+        logger.error(f"Tipo de Erro: {type(e).__name__}")
+        logger.error(f"Mensagem de Erro: {e}")
+        logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
+        from django.http import HttpResponseServerError
+        return HttpResponseServerError("Ocorreu um erro interno ao carregar a página de gerenciamento de usuários.")
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
