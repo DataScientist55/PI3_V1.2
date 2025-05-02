@@ -207,9 +207,12 @@ def aprovar_requisicao(request, pk):
         if material_requisitado.quantidade >= quantidade_requisitada:
 
             material_requisitado.quantidade -= quantidade_requisitada
-            requisicao.status = 'Aprovado'
             material_requisitado.save()
             logger.error(f"Estoque de {material_requisitado.nome} atualizado para {material_requisitado.quantidade}.")
+
+            requisicao.status = 'Aprovado'
+            material_requisitado.save()
+            logger.error(f"Requisição {pk} aprovada com sucesso.")
 
             messages.success(request, f'Requisição {pk} aprovada com sucesso!')
         else:
