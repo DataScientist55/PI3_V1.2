@@ -172,7 +172,17 @@ def acompanhar_requisicoes(request):
         except Requisicao.DoesNotExist:
             messages.error(request, 'Requisição não encontrada.')
     else:
-        requisicoes = Requisicao.objects.filter(usuario=request.user).order_by('status', 'criado_em')
+        requisicoes = Requisicao.objects.filter(usuario=request.user).annotate(
+            status_order=Case(
+                when(status='Pendente', then=1),
+                when(status='Aprovado', then=2),
+                when(status='Negada', then=3),
+             output_field=IntegerField(),
+            )
+        ).select_related(
+            'material', 'material__tipo' # Otimiza busca de dados relacionados
+        ).order_by('status_order', '-criado_em')
+        
         return render(request, "requisicoes/acompanhar.html", {'requisicoes': requisicoes})
 
     return render(request, "requisicoes/acompanhar.html")
