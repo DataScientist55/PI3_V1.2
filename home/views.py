@@ -111,13 +111,14 @@ def listar_materiais(request):
         # Retornar uma resposta de erro genérica para o usuário
         from django.http import HttpResponseServerError
         return HttpResponseServerError("Ocorreu um erro interno no servidor ao listar materiais.")
+    
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def controle_pedidos(request):
     
     requisicoes_pendentes = Requisicao.objects.filter(status='Pendente').select_related(
         'usuario', 'material', 'categoria'
-    ).order_by('criaado_em')
+    ).order_by('criado_em')
 
     context = {
         'requisicoes_pendentes': requisicoes_pendentes,
