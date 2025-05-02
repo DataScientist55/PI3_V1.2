@@ -335,6 +335,49 @@ def register(request):
 
     return render(request, 'registration/register.html', {'form': form})
 
+def editar_usuario(request, pk):
+    usuario = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Usuário {usuario.username} atualizado com sucesso!')
+            return redirect('listar_usuarios')
+    
+    else:
+        form = CustomUserCreationForm(instance=usuario)
+
+        context = {
+            'form': form,
+            'usuario': usuario
+        }
+
+    return render(request, 'usuarios/editar.html', context)
+
+def excluir_usuario(request, pk):
+    usuario = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        usuario.delete()
+        messages.success(request, f'Usuário {usuario.username} excluído com sucesso!')
+        return redirect('listar_usuarios')
+    
+    context = {
+        'usuario': usuario
+    }
+
+    return render(request, 'usuarios/confirmar_exclusao.html', context)
+
+def listar_usuarios(request):
+    usuarios = User.objects.all()
+    context = {
+        'usuarios': usuarios,
+    }
+    return render(request, 'usuarios/listar.html', context)
+
+
+
+
+
 # 🚀 Dashboard Inteligente
 def dashboard(request):
     if request.user.is_authenticated:
