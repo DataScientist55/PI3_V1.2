@@ -118,15 +118,39 @@ def listar_materiais(request):
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def controle_pedidos(request):
+    logger.error(f"--- Entrando na view controle_pedidos (Admin: {request.user.username}) ---")
+    requisicoes_pendentes = None 
+    context = {}
     
-    requisicoes_pendentes = Requisicao.objects.filter(status='Pendente').select_related(
-        'usuario', 'material', 'categoria'
-    ).order_by('criado_em')
+    try: 
+        logger.error("Tentando executar Requisicao.objects.filter(status='Pendente')")
+        requisicoes_pendentes = Requisicao.objects.filter(status='Pendente').select_related(
+             'usuario', 'material', 'material__tipo'
+        ).order_by('criado_em')
+        
+        count = requisicoes_pendentes.count() # Força a contagem para ver se a query básica funciona
+        logger.error(f"Consulta Requisições pendentes retornou {count} itens.")
 
-    context = {
-        'requisicoes_pendentes': requisicoes_pendentes,
-    }
+        context = {
+            'requisicoes_pendentes': requisicoes_pendentes,
 
+        }
+        logger.error("Contexto criado. Tentando renderizar o template de pedidos...")
+
+        response = render(request, "pedidos/controle.html", context)
+        logger.error(" --- Renderização de controle_pedidos concluída com sucesso. ---")
+        return response
+    
+    except Exception as e:
+        logger.error(f"!!! EXCEÇÃO CAPTURADA na view controle_pedidos !!!")
+        logger.error(f"Tipo de Erro: {type(e).__name__}")
+        logger.error(f"Mensagem de Erro: {e}")
+        logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
+
+        return HttpResponseServerError("Ocorreu um erro interno no servidor ao listar as requisições pendentes.")
+
+    
+    
 
 
     return render(request, "pedidos/controle.html", context)
