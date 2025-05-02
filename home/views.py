@@ -335,6 +335,17 @@ def register(request):
 
     return render(request, 'registration/register.html', {'form': form})
 
+@login_required
+@user_passes_test(is_admin, login_url='home')
+def gerenciar_usuarios(request):
+    usuarios = User.objects.all()
+    context = {
+        'usuarios': usuarios,
+    }
+    return render(request, 'usuarios/gerenciar.html', context)
+
+@login_required
+@user_passes_test(is_admin, login_url='home')
 def editar_usuario(request, pk):
     usuario = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
@@ -354,6 +365,8 @@ def editar_usuario(request, pk):
 
     return render(request, 'usuarios/editar.html', context)
 
+@login_required
+@user_passes_test(is_admin, login_url='home')
 def excluir_usuario(request, pk):
     usuario = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
@@ -367,6 +380,8 @@ def excluir_usuario(request, pk):
 
     return render(request, 'usuarios/confirmar_exclusao.html', context)
 
+@login_required
+@user_passes_test(is_admin, login_url='home')
 def listar_usuarios(request):
     usuarios = User.objects.all()
     context = {

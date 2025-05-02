@@ -19,4 +19,7 @@ urlpatterns = [
     path('requisicoes/<int:pk>/aprovar/', views.aprovar_requisicao, name='aprovar_requisicao'),
     path('requisicoes/<int:pk>/negar/', views.negar_requisicao, name='negar_requisicao'), 
     path('historico/', views.historico_requisicoes, name='historico_requisicoes'),
+    path('gerenciar/<int:pk>/editar/', views.editar_usuario, name='editar_usuario'),
+    path('gerenciar/<int:pk>/deletar/', views.excluir_usuario, name='excluir_usuario'),
+    path('gerenciar/listar/', views.listar_usuarios, name='listar_usuarios'),
 ]
