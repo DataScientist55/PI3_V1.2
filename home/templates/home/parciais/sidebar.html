@@ -32,8 +32,10 @@
                     <a class="nav-link text-white" href="{% url 'acompanhar_requisicoes' %}">Acompanhar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'gerenciar_usuarios' %}">Gerenciar Usuários</a>
+                    <a  class="nav-link text-white" href="{% url 'gerenciar_usuarios' %}">Gerenciar Usuários</a>
                 </li>
+                <hr>
+                <li><a class="nav-link text-white" href="{% url 'admin:index' %}" >Admin Django</a></li>
             {% endif %}
         {% else %}
             <li class="nav-item">
