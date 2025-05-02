@@ -225,6 +225,8 @@ def aprovar_requisicao(request, pk):
         logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
         messages.error(request, 'Ocorreu um erro ao aprovar a requisição.')
 
+    return redirect('controle_pedidos')
+
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def negar_requisicao(request, pk):
