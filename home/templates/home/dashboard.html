@@ -54,8 +54,7 @@
             {% for usuario in usuarios %}
                 <li>
                     {{ usuario.username }} - {{ usuario.email }}
-                    <a href="{% url 'editar_usuario' usuario.id %}">Editar</a>
-                    <a href="{% url 'excluir_usuario' usuario.id %}">Excluir</a>
+
                 </li>
             {% empty %}
                 <li>Nenhum usuário cadastrado.</li>

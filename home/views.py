@@ -59,6 +59,7 @@ def sobre(request):
 def contato(request):
     return render(request, "home/contato.html")
 
+@login_required
 def cadastrar_material(request):
     if request.method == 'POST':
         form = MaterialForm(request.POST)
@@ -76,6 +77,7 @@ def cadastrar_material(request):
 
 logger = logging.getLogger(__name__)
 
+@login_required
 def listar_materiais(request):
     # lista_de_materias = Material.objects.all()
 
@@ -407,6 +409,7 @@ def dashboard(request):
                 'materiais': materiais,
                 'pendentes': pendentes,
                 'historico': historico_finalizadas,
+                
             }
         else:
             
