@@ -14,6 +14,7 @@ from .models import Material, Requisicao
 from .serializers import MaterialSerializer, RequisicaoSerializer
 from home import models
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db import transaction
 
 User = get_user_model()
 
@@ -111,7 +112,9 @@ def listar_materiais(request):
         # Retornar uma resposta de erro genérica para o usuário
         from django.http import HttpResponseServerError
         return HttpResponseServerError("Ocorreu um erro interno no servidor ao listar materiais.")
-    
+
+# ==================================================================> Controle de pedidos  <===
+
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def controle_pedidos(request):
@@ -128,9 +131,10 @@ def controle_pedidos(request):
 
     return render(request, "pedidos/controle.html", context)
 
-# ==================================================================> aqui <===
+
 
 @login_required
+@user_passes_test(is_admin, login_url='home')
 def acompanhar_requisicoes(request):
 
     if request.method == 'POST':
@@ -149,6 +153,82 @@ def acompanhar_requisicoes(request):
         return render(request, "requisicoes/acompanhar.html", {'requisicoes': requisicoes})
 
     return render(request, "requisicoes/acompanhar.html")
+
+@login_required
+@user_passes_test(is_admin, login_url='home')
+@transaction.atomic
+def aprovar_requisicao(request, pk):
+    '''
+    Aprova uma requisição de material.
+    Se o método for POST, tenta aprovar a requisição.
+    Se a quantidade requisitada for menor ou igual à quantidade disponível no estoque, atualiza o estoque e salva a requisição como aprovada.
+
+    '''
+
+    if request.method != 'POST':
+        messages.error(request, "Método inválido. Apenas POST é permitido.")
+        return redirect('controle_pedidos')
+    
+    requisicao = get_object_or_404(Requisicao, pk=pk, status='Pendente')
+    material_requisitado = requisicao.material
+    quantidade_requisitada = requisicao.quantidade  
+
+    logger.error(f"Tentando aprovar requisição {pk} para o material {material_requisitado.nome} com quantidade {quantidade_requisitada}.")
+
+    try:
+        '''
+        Verifica se a quantidade requisitada é menor ou igual à quantidade disponível no estoque.
+        Se sim, atualiza o estoque do material e salva a requisição como aprovada.  
+        Se não, exibe uma mensagem de erro informando que o estoque é insuficiente.
+        '''
+        if material_requisitado.quantidade >= quantidade_requisitada:
+
+            material_requisitado.quantidade -= quantidade_requisitada
+            material_requisitado.save()
+            logger.error(f"Estoque de {material_requisitado.nome} atualizado para {material_requisitado.quantidade}.")
+
+            messages.success(request, f'Requisição {pk} aprovada com sucesso!')
+        else:
+            logger.warning(f"Estoque insuficiente para o material {material_requisitado.nome}. para aprovar a requisição {pk}. \
+                           Necessaria {quantidade_requisitada}, disponível {material_requisitado.quantidade}.")
+            messages.error(f"Estoque insuficiente para o material {material_requisitado.nome}. Estoque disponível: {material_requisitado.quantidade}. \
+                           Necessário: {quantidade_requisitada}.")
+            
+    except Exception as e:
+        logger.error(f"!!! EXCEÇÃO CAPTURADA ao aprovar requisição {pk} !!!")
+        logger.error(f"Tipo de Erro: {type(e).__name__}")
+        logger.error(f"Mensagem de Erro: {e}")
+        logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
+        messages.error(request, 'Ocorreu um erro ao aprovar a requisição.')
+
+@login_required
+@user_passes_test(is_admin, login_url='home')
+def negar_requisicao(request, pk):
+    
+    if request.method != 'POST':
+        messages.error(request, "Método inválido. Apenas POST é permitido.")
+        return redirect('controle_pedidos')
+    
+    requisicao = get_object_or_404(Requisicao, pk=pk, status='Pendente')
+    logger.error(f"Tentando negar requisição {pk}.")
+
+    try: 
+        requisicao .status = 'Negada'
+        requisicao.save()
+        messages.success(request, f"Requisição {pk} atualizada para 'Negada'")
+        messages.info(request, f"Requisilção ID {pk} ({requisicao.material.nome}) foi negada.")
+    except Exception as e:
+        logger.error(f"!!! EXCEÇÃO CAPTURADA ao negar requisição {pk} !!!")
+        logger.error(f"Tipo de Erro: {type(e).__name__}")
+        logger.error(f"Mensagem de Erro: {e}")
+        logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
+        messages.error(request, 'Ocorreu um erro ao negar a requisição.')
+    
+    return redirect('controle_pedidos')
+
+
+
+
 
 def login_view(request):
     if request.method == 'POST':

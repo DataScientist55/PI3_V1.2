@@ -15,5 +15,7 @@ urlpatterns = [
     path('materiais/', views.MateriaisListView.as_view(), name='api_materiais'),
     path('requisicoes/', views.RequisicoesListView.as_view(), name='api_requisicoes'),
     path('materiais/<int:pk>/editar/', views.editar_material, name='editar_material'),
-    path('materiais/<int:pk>/deletar/', views.excluir_material, name='excluir_material'), 
+    path('materiais/<int:pk>/deletar/', views.excluir_material, name='excluir_material'),
+    path('requisicoes/<int:pk>/aprovar/', views.aprovar_requisicao, name='aprovar_requisicao'),
+    path('requisicoes/<int:pk>/negar/', views.negar_requisicao, name='negar_requisicao'), 
 ]
