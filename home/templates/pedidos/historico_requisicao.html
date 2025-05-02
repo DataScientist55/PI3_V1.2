@@ -1,0 +1,41 @@
+{# templates/pedidos/historico_requisicao.html #}
+{% extends "base.html" %}
+
+{% block title %}Histórico de Requisições{% endblock %}
+
+{% block content %}
+    <h2>Histórico de Requisições</h2>
+
+    {% if requisicoes %}
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID Req.</th>
+                    <th>Usuário</th>
+                    <th>Material</th>
+                    <th>Tipo</th>
+                    <th>Qtd. Solicitada</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requisicoes %}
+                <tr>
+                    <td>{{ req.id }}</td>
+                    <td>{{ req.usuario.get_full_name|default:req.usuario.username }}</td> {# Mostra nome completo ou username #}
+                    <td>{{ req.material.nome }}</td>
+                    <td>{% if req.material.tipo %}{{ req.material.tipo.nome }}{% else %}Sem Tipo{% endif %}</td>
+                    <td>{{ req.quantidade }}</td>
+                    <td>{{ req.status }}</td> {# Mostra o status da requisição #}
+                    <td>{{ req.criado_em|date:"d/m/Y H:i" }}</td> {# Formata a data #}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info mt-3" role="alert">
+            Nenhuma requisição encontrada.
+        </div>
+    {% endif %}
+{% endblock %}
