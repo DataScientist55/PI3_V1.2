@@ -172,7 +172,7 @@ def acompanhar_requisicoes(request):
         except Requisicao.DoesNotExist:
             messages.error(request, 'Requisição não encontrada.')
     else:
-        requisicoes = Requisicao.objects.filter(usuario=request.user)
+        requisicoes = Requisicao.objects.filter(usuario=request.user).order_by('status', 'criado_em')
         return render(request, "requisicoes/acompanhar.html", {'requisicoes': requisicoes})
 
     return render(request, "requisicoes/acompanhar.html")
