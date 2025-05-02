@@ -344,7 +344,7 @@ def gerenciar_usuarios(request):
     context = {
         'usuarios': usuarios,
     }
-    return render(request, 'usuarios/gerenciar.html', context)
+    return render(request, 'usuarios/gerenciar_users.html', context)
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
