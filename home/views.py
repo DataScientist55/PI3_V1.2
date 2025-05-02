@@ -2,6 +2,7 @@ import logging
 import traceback
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
+from django.forms import IntegerField
 from django.http import HttpResponse, HttpResponseServerError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -15,6 +16,7 @@ from .serializers import MaterialSerializer, RequisicaoSerializer
 from home import models
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
+from django.db.models import Case, When, Value, IntegerField
 
 User = get_user_model()
 
@@ -174,9 +176,9 @@ def acompanhar_requisicoes(request):
     else:
         requisicoes = Requisicao.objects.filter(usuario=request.user).annotate(
             status_order=Case(
-                when(status='Pendente', then=1),
-                when(status='Aprovado', then=2),
-                when(status='Negada', then=3),
+                When(status='Pendente', then=1),
+                When(status='Aprovado', then=2),
+                When(status='Negada', then=3),
              output_field=IntegerField(),
             )
         ).select_related(
