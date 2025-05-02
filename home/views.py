@@ -188,7 +188,6 @@ def historico_requisicoes(request):
 
         
 
-# ==================================================================================================================
 
 @login_required
 def acompanhar_requisicoes(request):
@@ -301,6 +300,7 @@ def negar_requisicao(request, pk):
 
 
 
+# ==================================================================================================================
 
 def login_view(request):
     if request.method == 'POST':
@@ -347,8 +347,8 @@ def dashboard(request):
                 'painel_admin': True,
                 'requisicoes': requisicoes,
                 'materiais': materiais,
-
                 'pendentes': pendentes,
+                'historico': historico_finalizadas,
             }
         else:
             
