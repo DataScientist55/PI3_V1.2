@@ -155,9 +155,40 @@ def controle_pedidos(request):
     
 
 
-    return render(request, "pedidos/controle.html", context)
 
+@login_required
+@user_passes_test(is_admin, login_url='home')
+def historico_requisicoes(request):
+    logger.error(f"--- Entrando na view historico_requisicoes (Admin: {request.user.username}) ---")
+    
+    try:
+        todas_requisicoes = Requisicao.objects.all().select_related(
+              'usuario', 'material', 'material__tipo'
+        ).order_by('-criado_em')
 
+        count = todas_requisicoes.count()
+        logger.error(f"Consulta todas_requisicoes retornou {count} itens.")
+
+        context = {
+            'todas_requisicoes': todas_requisicoes,
+        }
+        
+        logger.error("Context criadoo. Tentando renderizar historico_requisicao.html...")
+        Response = render(request, "pedidos/historico_requisicao.html", context)
+        logger.error(" --- Renderização de historico_requisicao concluída com sucesso. ---")
+        return Response
+    
+    except Exception as e:
+        logger.error(f"!!! EXCEÇÃO CAPTURADA na view historico_requisicoes !!!")
+        logger.error(f"Tipo de Erro: {type(e).__name__}")
+        logger.error(f"Mensagem de Erro: {e}")
+        logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
+
+        return HttpResponseServerError("Ocorreu um erro interno no servidor ao listar as requisições.")
+
+        
+
+# ==================================================================================================================
 
 @login_required
 def acompanhar_requisicoes(request):
