@@ -170,7 +170,7 @@ def historico_requisicoes(request):
         logger.error(f"Consulta todas_requisicoes retornou {count} itens.")
 
         context = {
-            'todas_requisicoes': todas_requisicoes,
+            'requisicoes': todas_requisicoes,
         }
         
         logger.error("Context criadoo. Tentando renderizar historico_requisicao.html...")
