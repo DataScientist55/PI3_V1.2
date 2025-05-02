@@ -18,5 +18,5 @@ urlpatterns = [
     path('materiais/<int:pk>/deletar/', views.excluir_material, name='excluir_material'),
     path('requisicoes/<int:pk>/aprovar/', views.aprovar_requisicao, name='aprovar_requisicao'),
     path('requisicoes/<int:pk>/negar/', views.negar_requisicao, name='negar_requisicao'), 
-    path('historico/', views.historico_requisicoes, name='historico_requisicoes'),
+    path('historico/', views.historico_requisicoes, name='historico_requisicao'),
 ]
