@@ -49,6 +49,18 @@
                 <li>Nenhuma requisição foi atendida.</li>
             {% endfor %}
         </ul>
+        <h3>Gerenciar Usuários 👤</h3  >
+        <ul>
+            {% for usuario in usuarios %}
+                <li>
+                    {{ usuario.username }} - {{ usuario.email }}
+                    <a href="{% url 'editar_usuario' usuario.id %}">Editar</a>
+                    <a href="{% url 'excluir_usuario' usuario.id %}">Excluir</a>
+                </li>
+            {% empty %}
+                <li>Nenhum usuário cadastrado.</li>
+            {% endfor %}
+        </ul>
 
     {% else %}
         <h2>Minhas Requisições 📄</h2>
