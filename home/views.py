@@ -158,7 +158,6 @@ def controle_pedidos(request):
 
 
 @login_required
-@user_passes_test(is_admin, login_url='home')
 def acompanhar_requisicoes(request):
 
     if request.method == 'POST':
