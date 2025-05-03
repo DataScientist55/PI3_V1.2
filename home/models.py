@@ -9,11 +9,11 @@ class CategoriaMaterial(models.TextChoices):
     ESCRITORIO = 'Escritório'
     LIMPEZA = 'Limpeza'
 
-class TipoMaterial(models.Model):
-    nome = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.nome
+class TipoMaterial(models.TextChoices):
+    PEDAGOGICO = 'Pedagógico'
+    MANUTENCAO = 'Manutenção'
+    CONSUMO = 'Consumo'
+    OUTROS = 'Outros'
 
 class Material(models.Model):
     nome = models.CharField(max_length=100)
