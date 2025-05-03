@@ -365,6 +365,25 @@ def gerenciar_usuarios(request):
         logger.error(f"Traceback Completo:\n{traceback.format_exc()}")
         from django.http import HttpResponseServerError
         return HttpResponseServerError("Ocorreu um erro interno ao carregar a página de gerenciamento de usuários.")
+    
+@login_required
+@user_passes_test(is_admin, login_url='home')
+def cadastrar_usuario(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuário cadastrado com sucesso!')
+            return redirect('listar_usuarios')
+    
+    else:
+        form = CustomUserCreationForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'restration/cadastrar.html', context)
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
