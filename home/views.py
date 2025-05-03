@@ -404,7 +404,7 @@ def editar_usuario(request, pk):
             'usuario': usuario
         }
 
-    return render(request, 'usuarios/editar_usario.html', context)
+    return render(request, 'usuarios/editar.html', context)
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
