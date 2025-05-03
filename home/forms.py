@@ -18,6 +18,8 @@ class RegistroForm(forms.ModelForm):
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    first_name = forms.CharField(label='Nome')
+    last_name = forms.CharField(label='Sobrenome')
 
     class Meta:
         model = User
