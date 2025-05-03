@@ -43,7 +43,7 @@ class MaterialForm(forms.ModelForm):
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email']
+        fields = ['username', 'first_name', 'last_name', 'email', 'is_admin']   
 
     widgets = {
         'username': forms.TextInput(attrs={'class': 'form-control'}),
