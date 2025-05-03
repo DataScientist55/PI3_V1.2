@@ -374,7 +374,7 @@ def cadastrar_usuario(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Usuário cadastrado com sucesso!')
-            return redirect('listar_usuarios')
+            return redirect('gerenciar_usuarios')
     
     else:
         form = CustomUserCreationForm()
