@@ -20,7 +20,21 @@
                 <td>{{ requisicao.id }}</td>
                 <td>{{ requisicao.material.nome }}</td>
                 <td>{{ requisicao.quantidade }}</td>
-                <td>{{ requisicao.status }}</td>
+                <td> {# Célula do Status #}
+                    {% if req.status == 'Pendente' %}
+                        {# Badge Amarelo/Bege para Pendente (precisa de texto escuro) #}
+                        <span class="badge bg-warning text-dark">{{ req.status }}</span>
+                    {% elif req.status == 'Aprovado' %}
+                        {# Badge Verde para Aprovado #}
+                        <span class="badge bg-success">{{ req.status }}</span>
+                    {% elif req.status == 'Negado' %}
+                        {# Badge Vermelho para Negado #}
+                        <span class="badge bg-danger">{{ req.status }}</span>
+                    {% else %}
+                        {# Fallback para outros status (se houver) - Badge Cinza #}
+                        <span class="badge bg-secondary">{{ req.status }}</span>
+                    {% endif %}
+                </td>
                 <td>{{ requisicao.criado_em }}</td>
             </tr>
             {% endfor %}
