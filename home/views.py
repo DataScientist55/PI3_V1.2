@@ -354,7 +354,7 @@ def gerenciar_usuarios(request):
 
         logger.info("Contexto criado. Tentando renderizar home/gerenciar_users.html...")
       
-        response = render(request, 'home/registration/gerenciar_users.html', context)
+        response = render(request, 'registration/gerenciar_users.html', context)
         logger.info("--- Renderização de página de gerenciamento concluída. ---")
         return response
 
