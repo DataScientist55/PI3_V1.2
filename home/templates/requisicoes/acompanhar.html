@@ -21,14 +21,14 @@
                 <td>{{ requisicao.material.nome }}</td>
                 <td>{{ requisicao.quantidade }}</td>
                 <td> {# Célula do Status #}
-                    {% if req.status == 'Pendente' %}
-                        <span class="badge bg-warning text-dark">{{ req.status }}</span>
-                    {% elif req.status == 'Aprovado' %}
-                        <span class="badge bg-success">{{ req.status }}</span>
-                    {% elif req.status == 'Negado' %}
-                        <span class="badge bg-danger">{{ req.status }}</span>
+                    {% if requisicao.status == 'Pendente' %}
+                        <span class="badge bg-warning text-dark">{{ requisicao.status }}</span>
+                    {% elif requisicao.status == 'Aprovado' %}
+                        <span class="badge bg-success">{{ requisicao.status }}</span>
+                    {% elif requisicao.status == 'Negado' %}
+                        <span class="badge bg-danger">{{ requisicao.status }}</span>
                     {% else %}
-                        <span class="badge bg-secondary">{{ req.status }}</span> {# Fallback #}
+                        <span class="badge bg-secondary">{{ requisicao.status }}</span> {# Fallback #}
                     {% endif %}
                 </td>
                 <td>{{ requisicao.criado_em }}</td>
