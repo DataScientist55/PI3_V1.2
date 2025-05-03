@@ -390,7 +390,7 @@ def cadastrar_usuario(request):
 def editar_usuario(request, pk):
     usuario = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST, instance=usuario)
+        form = UserEditForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
             messages.success(request, f'Usuário {usuario.username} atualizado com sucesso!')
