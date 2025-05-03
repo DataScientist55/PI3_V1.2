@@ -397,7 +397,7 @@ def editar_usuario(request, pk):
             return redirect('listar_usuarios')
     
     else:
-        form = CustomUserCreationForm(instance=usuario)
+        form = UserEditForm(instance=usuario)
 
         context = {
             'form': form,
