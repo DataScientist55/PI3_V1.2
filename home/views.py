@@ -427,9 +427,15 @@ def excluir_usuario(request, pk):
              logger.warning(f"Admin {request.user.username} tentou se auto-excluir.")
              messages.error(request, "Você não pode excluir sua própria conta de administrador.")
              return redirect('gerenciar_usuarios')
+        
 
         usuario = get_object_or_404(User, pk=pk)
         logger.error(f"Usuário '{usuario.username}' encontrado.")
+
+        if usuario.is_superuser:
+            logger.warning(f"Usuário '{usuario.username}' é um superusuário. Não pode ser excluído.")
+            messages.error(request, "Você não pode excluir um superusuário.")
+            return redirect('gerenciar_usuarios')
 
         if request.method == 'POST':
             logger.error("Método POST detectado.")
