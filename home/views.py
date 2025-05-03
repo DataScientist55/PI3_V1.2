@@ -383,28 +383,37 @@ def cadastrar_usuario(request):
         'form': form,
     }
 
-    return render(request, 'registration/cadastrar.html', context)
+    return render(request, 'registration/cadastrar_usuario.html', context)
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def editar_usuario(request, pk):
     usuario = get_object_or_404(User, pk=pk)
+
+    if usuario == request.user:
+         messages.warning(request, "Use o Django Admin para editar suas próprias informações.")
+         return redirect('gerenciar_usuarios')
+
     if request.method == 'POST':
+
         form = UserEditForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Usuário {usuario.username} atualizado com sucesso!')
-            return redirect('listar_usuarios')
-    
-    else:
+            messages.success(request, f'Usuário "{usuario.username}" atualizado com sucesso!')
+            return redirect('gerenciar_usuarios')
+        else:
+             messages.error(request, "Erro ao atualizar usuário. Verifique os dados.")
+
+    else: # GET
         form = UserEditForm(instance=usuario)
 
-        context = {
-            'form': form,
-            'usuario': usuario
-        }
+    context = {
+        'form': form,
+        'usuario': usuario 
+    }
 
-    return render(request, 'usuarios/editar_usuario.html', context)
+
+    return render(request, 'registration/editar_usuario.html', context)
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
