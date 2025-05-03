@@ -383,7 +383,7 @@ def cadastrar_usuario(request):
         'form': form,
     }
 
-    return render(request, 'restration/cadastrar.html', context)
+    return render(request, 'registration/cadastrar.html', context)
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
