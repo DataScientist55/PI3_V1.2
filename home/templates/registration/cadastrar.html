@@ -1,34 +1,52 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Gerenciar Usuários{% endblock %}
-{% block content %}
-    <h2>Gerenciar Usuários</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Tipo de Usuário</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for usuario in usuarios %}
-            <tr>
-                <td>{{ usuario.id }}</td>
-                <td>{{ usuario.username }}</td>
-                <td>{{ usuario.email }}</td>
-                <td>{{ usuario.tipo_usuario }}</td>
-                <td>
-                    <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="{% url 'excluir_usuario' usuario.id %}" class="btn btn-danger btn-sm">Excluir</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% block title %}Cadastrar Usuarios {% endblock %}
 
-    <a href="{% url 'home' %}" class="btn btn-primary mt-3">Voltar</a>
+{% block content %}
+    <h2>Cadastrar Novo Usuário (Admin)</h2>
+    <hr>
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>Erro:</strong> {{ form.non_field_errors }}
+
+            <strong>Erros: Verefique os campos por favor. </strong>
+            {% for error in form.non_field_errors %}
+                <p class="mb-0">{{ error }}</p>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'cadastrar_usuario' %}"> 
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="mb-3"> 
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+
+            
+                {{ field }}
+
+                
+                {% if field.errors %}
+                    <div class="invalid-feedback d-block" style="color: red; font-size: 0.875em;"> {# Estilo básico de erro #}
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+ 
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+ 
+
+        <button type="submit" class="btn btn-success">Cadastrar Usuário</button>
+        <a href="{% url 'gerenciar_usuarios' %}" class="btn btn-secondary">Cancelar</a> {# Link para voltar à lista de gerenciamento #}
+    </form>
 
 {% endblock %}

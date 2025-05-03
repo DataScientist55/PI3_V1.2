@@ -447,7 +447,7 @@ def dashboard(request):
                 'requisicoes': requisicoes,
                 'materiais': materiais,
                 'pendentes': pendentes,
-                'historico': historico_finalizadas,
+
                 
             }
         else:
