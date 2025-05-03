@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block tittle %}Confirmar Exclusão do Usuario {{usuario.nome}} {% endblock %}
+{% block title %}Confirmar Exclusão do Usuario {{usuario.username}} {% endblock %}
 
 {% block content %}
     <h2>Confirmar Exclusão</h2>
-    <p>Tem certeza que deseja excluir o usuario: <Strong>{{ usuario.nome }}</Strong></p>
+    <p>Tem certeza que deseja excluir o usuario: <strong>{{ usuario.username }}</strong></p>
 
-    <form method = "POST" action="{% url 'excluir_usuario' usuario.pk %}"> {# Action aponta para mesma URL #}
+    <form method="POST" action="{% url 'excluir_usuario' usuario.pk %}"> {# Action aponta para mesma URL #}
         {% csrf_token %}
-        <button type="submit" class="bnt btn-danger">Sim, Excluir</button>
+        <button type="submit" class="btn btn-danger">Sim, Excluir</button>
 
-        <a href = "{% url ' gerenciar_users ' %}" class="btn btn-secondary">Cancelar</a>
+        <a href = "{% url 'gerenciar_usuarios' %}" class="btn btn-secondary">Cancelar</a>
     </form>
-{% endblock %}
+{% endblock %}  
