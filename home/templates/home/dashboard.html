@@ -39,6 +39,28 @@
             {% endfor %}
         </ul>
 
+        <h3>Histórico de Requisições 📋</h3>
+        <ul>
+            {% for requisicao in requisicoes %}
+                <li>
+                    {{ requisicao.material }} - {{ requisicao.status }} ({{ requisicao.usuario }})
+                </li>
+            {% empty %}
+                <li>Nenhuma requisição foi atendida.</li>
+            {% endfor %}
+        </ul>
+        <h3>Gerenciar Usuários 👤</h3  >
+        <ul>
+            {% for usuario in usuarios %}
+                <li>
+                    {{ usuario.username }} - {{ usuario.email }}
+
+                </li>
+            {% empty %}
+                <li>Nenhum usuário cadastrado.</li>
+            {% endfor %}
+        </ul>
+
     {% else %}
         <h2>Minhas Requisições 📄</h2>
         <ul>

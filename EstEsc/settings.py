@@ -12,7 +12,7 @@ except ImportError:
     pass
 
 # Definir ambiente
-DJANGO_ENV = os.getenv('DJANGO_ENV', 'development')
+DJANGO_ENV = os.getenv('DJANGO_ENV', 'local')
 
 # Chave secreta para o Django
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosts permitidos
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production-35f4b.up.railway.app']
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', 'web-production-35f4b.up.railway.app', 'ow4crw.stackhero-network.com']
 
 # Aplicações instaladas
 INSTALLED_APPS = [
@@ -78,23 +78,23 @@ if DJANGO_ENV == 'production':
    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQLDATABASE'),
-        'USER': os.getenv('MYSQLUSER'),
-        'PASSWORD': os.getenv('MYSQLPASSWORD'),
-        'HOST': os.getenv('MYSQLHOST'),
-        'PORT': os.getenv('MYSQLPORT', '3306'),
+        'NAME': os.getenv('STACKHERO_MYSQL_DB_NAME'),
+        'USER': os.getenv('STACKHERO_MYSQL_USER'),
+        'PASSWORD': os.getenv('STACKHERO_MYSQL_ROOT_PASSWORD'),
+        'HOST': os.getenv('STACKHERO_MYSQL_HOST'),
+        'PORT': os.getenv('STACKHERO_MYSQL_PORT'),
+        'OPTIONS': {
+            'ssl': {'ca': os.path.join(BASE_DIR, 'isrgrootx1.pem'),},
+        },
     }
 }
 
 else:  # Desenvolvimento local
     DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'railway',
-        'USER': 'vecchio',
-        'PASSWORD': 'V3cc#!o55#',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+      
     }
 }
 

@@ -21,6 +21,13 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{% url 'controle_pedidos' %}">Controle</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white"  href="{% url 'historico_requisicoes' %}">Histórico</a>
+                </li>
+                <li class="nav-item">
+                    <a  class="nav-link text-white" href="{% url 'gerenciar_usuarios' %}">Gerenciar Usuários</a>
+                </li>
+             
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{% url 'fazer_requisicao' %}">Requisitar</a>

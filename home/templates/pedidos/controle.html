@@ -1,30 +1,62 @@
+{# templates/pedidos/controle.html #}
 {% extends "base.html" %}
 
-{% block title %}Controle de Estoque{% endblock %}
+{% block title %}Gerenciar Requisições Pendentes{% endblock %}
 
 {% block content %}
-    <h2>Controle de Estoque</h2>
-    <p>Aqui você pode visualizar o status atual do estoque.</p>
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Material</th>
-                <th>Categoria</th>
-                <th>Quantidade Atual</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for material in materiais %}
-            <tr>
-                <td>{{ material.nome }}</td>
-                <td>{{ material.categoria }}</td>
-                <td>{{ material.quantidade }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <a href="{% url 'cadastrar_material' %}" class="btn btn-success">Adicionar Material</a>
-    <a href="{% url 'listar_materiais' %}" class="btn btn-primary">Gerenciar Materiais</a>
+    <h2>Gerenciar Requisições Pendentes</h2>
+
+    {% if requisicoes_pendentes %}
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID Req.</th>
+                    <th>Usuário</th>
+                    <th>Material</th>
+                    <th>Tipo</th>
+                    <th>Qtd. Solicitada</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requisicoes_pendentes %}
+                <tr>
+                    <td>{{ req.id }}</td>
+                    <td>{{ req.usuario.get_full_name|default:req.usuario.username }}</td> {# Mostra nome completo ou username #}
+                    <td>{{ req.material.nome }}</td>
+                    <td>{% if req.material.tipo %}{{ req.material.tipo.nome }}{% else %}Sem Tipo{% endif %}</td>
+                    <td>{{ req.quantidade }}</td>
+                    <td>{{ req.criado_em|date:"d/m/Y H:i" }}</td> {# Formata a data #}
+                    <td>
+                        {# Formulário para APROVAR #}
+                        <form action="{% url 'aprovar_requisicao' req.pk %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm" title="Aprovar Requisição">
+                                <i class="fas fa-check"></i> Aprovar {# Exemplo com ícone FontAwesome #}
+                            </button>
+                        </form>
+
+                        {# Formulário para NEGAR #}
+                        <form action="{% url 'negar_requisicao' req.pk %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" title="Negar Requisição">
+                                <i class="fas fa-times"></i> Negar {# Exemplo com ícone FontAwesome #}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info mt-3" role="alert">
+            Nenhuma requisição pendente no momento.
+        </div>
+    {% endif %}
+
+    {# Links inferiores podem ser removidos ou alterados se não fizerem mais sentido aqui #}
+    {# <a href="{% url 'cadastrar_material' %}" class="btn btn-success">Adicionar Material</a> #}
+    {# <a href="{% url 'listar_materiais' %}" class="btn btn-primary">Gerenciar Materiais</a> #}
+
 {% endblock %}

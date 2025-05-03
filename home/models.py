@@ -20,7 +20,7 @@ class Material(models.Model):
     categoria = models.CharField(max_length=20, choices=CategoriaMaterial.choices)
     quantidade = models.PositiveIntegerField()
     criado_em = models.DateTimeField(auto_now_add=True)
-    tipo = models.ForeignKey(TipoMaterial, on_delete=models.CASCADE, null=True, blank=True)
+    tipo = models.ForeignKey(TipoMaterial, on_delete=models.PROTECT, null=True, blank=True)
 
 
     def __str__(self):

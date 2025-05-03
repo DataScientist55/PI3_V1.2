@@ -20,8 +20,18 @@
                 <td>{{ requisicao.id }}</td>
                 <td>{{ requisicao.material.nome }}</td>
                 <td>{{ requisicao.quantidade }}</td>
-                <td>{{ requisicao.status }}</td>
-                <td>{{ requisicao.data_requisicao }}</td>
+                <td> {# Célula do Status #}
+                    {% if requisicao.status == 'Pendente' %}
+                        <span class="badge bg-warning text-dark">{{ requisicao.status }}</span>
+                    {% elif requisicao.status == 'Aprovado' %}
+                        <span class="badge bg-success">{{ requisicao.status }}</span>
+                    {% elif requisicao.status == 'Negado' %}
+                        <span class="badge bg-danger">{{ requisicao.status }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ requisicao.status }}</span> {# Fallback #}
+                    {% endif %}
+                </td>
+                <td>{{ requisicao.criado_em }}</td>
             </tr>
             {% endfor %}
         </tbody>
