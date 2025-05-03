@@ -10,7 +10,7 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .forms import CustomUserCreationForm, MaterialForm,  RequisicaoForm
+from .forms import CustomUserCreationForm, MaterialForm,  RequisicaoForm, UserEditForm
 from .models import Material, Requisicao
 from .serializers import MaterialSerializer, RequisicaoSerializer
 from home import models
