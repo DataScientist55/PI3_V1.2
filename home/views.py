@@ -418,17 +418,53 @@ def editar_usuario(request, pk):
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def excluir_usuario(request, pk):
-    usuario = get_object_or_404(User, pk=pk)
-    if request.method == 'POST':
-        usuario.delete()
-        messages.success(request, f'Usuário {usuario.username} excluído com sucesso!')
-        return redirect('listar_usuarios')
-    
-    context = {
-        'usuario': usuario
-    }
+    logger.error(f"--- Entrando na view excluir_usuario PK: {pk} ---")
+    usuario = None
+    try:
+        logger.error("Tentando buscar usuário via get_object_or_404...")
+        # Evitar que admin se exclua
+        if int(pk) == request.user.pk:
+             logger.warning(f"Admin {request.user.username} tentou se auto-excluir.")
+             messages.error(request, "Você não pode excluir sua própria conta de administrador.")
+             return redirect('gerenciar_usuarios')
 
-    return render(request, 'registration/confirmar_exclusao_usuario.html', context)
+        usuario = get_object_or_404(User, pk=pk)
+        logger.error(f"Usuário '{usuario.username}' encontrado.")
+
+        if request.method == 'POST':
+            logger.error("Método POST detectado.")
+            try:
+                nome_usuario_excluido = usuario.username
+                usuario.delete()
+                logger.error(f"Usuário '{nome_usuario_excluido}' deletado.")
+                messages.success(request, f'Usuário "{nome_usuario_excluido}" excluído com sucesso!')
+                # CORREÇÃO DO REDIRECT:
+                logger.error("Redirecionando para 'gerenciar_usuarios'...")
+                return redirect('gerenciar_usuarios')
+            except models.ProtectedError:
+                 logger.error(f"ProtectedError ao excluir usuário {pk}.")
+                 messages.error(request, f'Não é possível excluir o usuário "{usuario.username}" pois ele está referenciado em outros registros.')
+                 return redirect('gerenciar_usuarios')
+            except Exception as delete_error:
+                logger.error(f"!!! EXCEÇÃO CAPTURADA no POST delete de excluir_usuario PK: {pk} !!!")
+                # ... (log completo do erro delete_error) ...
+                messages.error(request,"Ocorreu um erro ao excluir o usuário.")
+                return redirect('gerenciar_usuarios')
+        else: # GET
+            logger.error("Método GET detectado.")
+            context = {'usuario': usuario}
+            logger.error("Contexto criado. Tentando renderizar confirmar_exclusao_usuario.html...")
+            response = render(request, 'registration/confirmar_exclusao_usuario.html', context)
+            logger.error("--- Renderização de confirmar_exclusao_usuario.html concluída. ---")
+            return response
+
+    except User.DoesNotExist:
+         logger.error(f"Usuário com PK: {pk} não encontrado (já tratado por 404).")
+         raise # Re-levanta a exceção para o Django mostrar 404
+    except Exception as e:
+        logger.error(f"!!! EXCEÇÃO CAPTURADA GERAL na view excluir_usuario PK: {pk} !!!")
+        # ... (log completo do erro e) ...
+        return HttpResponseServerError("Ocorreu um erro interno ao processar a exclusão do usuário.")
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
