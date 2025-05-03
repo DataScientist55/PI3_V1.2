@@ -46,8 +46,9 @@ class UserEditForm(forms.ModelForm):
         fields = ['username', 'first_name', 'last_name', 'email']
 
     widgets = {
-        'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome de usuário'}),
-        'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome'}),
-        'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Sobrenome'}),
-        'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'E-mail'}),
+        'username': forms.TextInput(attrs={'class': 'form-control'}),
+        'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+        'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+        'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        'is_admin': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
     }
