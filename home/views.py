@@ -428,7 +428,7 @@ def excluir_usuario(request, pk):
         'usuario': usuario
     }
 
-    return render(request, 'registration/gerenciar_users.html', context)
+    return render(request, 'registration/confirmar_exclusao_usuario.html', context)
 
 @login_required
 @user_passes_test(is_admin, login_url='home')
